@@ -5,6 +5,7 @@
 
 //Temp
 #include <GLFW\glfw3.h>
+#include <TestLib\GLFWTest.h>
 
 /*!
  *
@@ -16,7 +17,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 	//Reference to the window we will make
     GLFWwindow* window;
-	
 	//Create the window with whatever parameters we want
     window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
 	
@@ -32,6 +32,8 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 	//Make the new window the focus
     glfwMakeContextCurrent(window);
+
+	GLFWTest::clearToCornflowerBlue();
 
 	//While the window is valid
 	while (!glfwWindowShouldClose(window))
