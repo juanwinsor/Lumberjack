@@ -39,7 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)\$(ProjectName)</OutDir>
     <PreLinkEventUseInBuild>false</PreLinkEventUseInBuild>
     <IntDir>build\$(Configuration)\</IntDir>
   </PropertyGroup>
