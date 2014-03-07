@@ -43,6 +43,7 @@ namespace OpenGLForm
 
 			rtri = 0.0f;
 			rquad = 0.0f;
+
 		}
 
 		System::Void Render(System::Void)
@@ -124,6 +125,11 @@ namespace OpenGLForm
 			SwapBuffers(m_hDC) ;
 		}
 
+		System::Void UpdateGLSceneSize( int x, int y )
+		{
+			ReSizeGLScene(x, y);
+		}
+
 	private:
 		HDC m_hDC;
 		HGLRC m_hglrc;
@@ -195,7 +201,7 @@ namespace OpenGLForm
 		bool InitGL(GLvoid)										// All setup for opengl goes here
 		{
 			glShadeModel(GL_SMOOTH);							// Enable smooth shading
-			glClearColor(1.0f, 0.0f, 0.0f, 1.0f);				// Black background
+			glClearColor(0.39f, 0.584f, 0.9294f, 1.0f);				// Black background
 			glClearDepth(1.0f);									// Depth buffer setup
 			glEnable(GL_DEPTH_TEST);							// Enables depth testing
 			glDepthFunc(GL_LEQUAL);								// The type of depth testing to do

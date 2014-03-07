@@ -1,7 +1,7 @@
 // LJEditor.cpp : main project file.
 
 #include "stdafx.h"
-#include "Form1.h"
+#include "LumberjackEditor.h"
 
 using namespace LJEditor;
 
