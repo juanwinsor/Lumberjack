@@ -264,26 +264,28 @@ namespace LJEditor {
 			this->GLWindowPB->Size = System::Drawing::Size(994, 531);
 			this->GLWindowPB->TabIndex = 0;
 			this->GLWindowPB->TabStop = false;
+			this->GLWindowPB->SizeChanged += gcnew System::EventHandler(this, &Form1::GLWindowPB_SizeChanged);
 			// 
 			// ExportTool
 			// 
 			this->ExportTool->Location = System::Drawing::Point(4, 22);
 			this->ExportTool->Name = L"ExportTool";
 			this->ExportTool->Padding = System::Windows::Forms::Padding(3);
-			this->ExportTool->Size = System::Drawing::Size(660, 704);
+			this->ExportTool->Size = System::Drawing::Size(1000, 537);
 			this->ExportTool->TabIndex = 1;
 			this->ExportTool->Text = L"ExportTool";
 			this->ExportTool->UseVisualStyleBackColor = true;
 			// 
 			// LogWindow
 			// 
-			this->LogWindow->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->LogWindow->Enabled = false;
 			this->LogWindow->Location = System::Drawing::Point(0, 0);
 			this->LogWindow->Name = L"LogWindow";
+			this->LogWindow->ReadOnly = true;
 			this->LogWindow->Size = System::Drawing::Size(1008, 139);
 			this->LogWindow->TabIndex = 6;
+			this->LogWindow->TabStop = false;
 			this->LogWindow->Text = L"LogWindow";
-			this->LogWindow->TextChanged += gcnew System::EventHandler(this, &Form1::richTextBox1_TextChanged);
 			// 
 			// Form1
 			// 
