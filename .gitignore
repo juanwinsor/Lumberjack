@@ -2,3 +2,8 @@
 /Lumberjack/Lumberjack/Debug
 /Lumberjack/Lumberjack/*.user
 /Lumberjack/*.suo
+*.suo
+*.user
+build
+*.sdf
+*.opensdf
