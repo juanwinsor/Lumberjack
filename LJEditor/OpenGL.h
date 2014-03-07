@@ -12,18 +12,19 @@ namespace OpenGLForm
 	public ref class COpenGL: public System::Windows::Forms::NativeWindow
 	{
 	public:
-		COpenGL(System::Windows::Forms::Form ^ parentForm, GLsizei iWidth, GLsizei iHeight)
+
+		COpenGL(System::Windows::Forms::Form ^ parentForm, System::Windows::Forms::PictureBox^ pictureBox)
 		{
 			CreateParams^ cp = gcnew CreateParams;
 
 			// Set the position on the form
-			cp->X = 50;
+			cp->X = 0;
 			cp->Y = 0;
-			cp->Height = iHeight;
-			cp->Width = iWidth;
+			cp->Height = pictureBox->Height;
+			cp->Width = pictureBox->Width;
 
 			// Specify the form as the parent.
-			cp->Parent = parentForm->Handle;
+			cp->Parent = pictureBox->Handle; //parentForm->Handle;
 
 			// Create as a child of the specified parent and make OpenGL compliant (no clipping)
 			cp->Style = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -36,14 +37,13 @@ namespace OpenGLForm
 			if(m_hDC)
 			{
 				MySetPixelFormat(m_hDC);
-				ReSizeGLScene(iWidth, iHeight);
+				ReSizeGLScene(pictureBox->Width, pictureBox->Height);
 				InitGL();
 			}
 
 			rtri = 0.0f;
 			rquad = 0.0f;
 		}
-
 
 		System::Void Render(System::Void)
 		{
