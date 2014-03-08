@@ -68,7 +68,11 @@ namespace LJEditor {
 
 
 
-
+	//-- propose naming standard of 2 or 3 letter control prefix (lower case), followed by the specific instance name
+	//-- this will make intellisense more useful providing a naming hint from the control type
+	//-- tcTools, tpGameWindow, pbGLWindow, tpExportTool, rtLogWindow
+	//-- if all of the components have to be on this Form then maybe prefixing the instance name with the tool name would beneficial as well
+	//-- ie. btnExportTool_ExportButton, btnExportTool_CleanButton
 	private: System::Windows::Forms::TabControl^  ToolsTC;
 	private: System::Windows::Forms::TabPage^  GameWindow;
 	private: System::Windows::Forms::PictureBox^  GLWindowPB;
