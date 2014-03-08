@@ -7,6 +7,18 @@
 #include <GLFW\glfw3.h>
 #include <TestLib\GLFWTest.h>
 
+//test class
+class testClass
+{
+public:
+	testClass()
+		:testMember(42){}
+
+	int testMember;
+};
+BOOST_PTR_DEF(testClass);
+
+
 /*!
  *
  */
@@ -34,6 +46,16 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
     glfwMakeContextCurrent(window);
 
 	GLFWTest::clearToCornflowerBlue();
+
+
+
+	//-- testing shared pointer macro
+	testClassPtr myClass = testClassPtr( new testClass() );
+	char* someValue = new char[256];
+	sprintf(someValue, "\n\nValue of myClass->testMember : %d\n\n", myClass->testMember);
+	OutputDebugStringA(someValue);
+
+
 
 	//While the window is valid
 	while (!glfwWindowShouldClose(window))
