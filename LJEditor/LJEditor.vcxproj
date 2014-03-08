@@ -91,7 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="Forms\LumberjackEditor\Export.cpp" />
+    <ClCompile Include="Forms\Export\Export.cpp" />
     <ClCompile Include="LJEditor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -100,18 +100,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\CGLWindow.h" />
-    <ClInclude Include="Forms\LumberjackEditor\Export.h">
+    <ClInclude Include="Forms\Export\Export.h" />
+    <ClInclude Include="Forms\LumberjackEditor\LumberjackEditor.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Forms\LumberjackEditor\LumberjackEditor.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Forms\LumberjackEditor\LumberjackEditor.resX" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

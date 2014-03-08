@@ -29,7 +29,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Forms\LumberjackEditor\Export.cpp">
+    <ClCompile Include="Forms\Export\Export.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -40,13 +40,13 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Forms\LumberjackEditor\Export.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Forms\LumberjackEditor\LumberjackEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\CGLWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Forms\Export\Export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,9 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LumberjackEditor.resX">
-      <Filter>Resource Files</Filter>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\LumberjackEditor\LumberjackEditor.resX">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
   </ItemGroup>
