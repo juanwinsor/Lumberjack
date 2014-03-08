@@ -55,7 +55,10 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 	sprintf(someValue, "\n\nValue of myClass->testMember : %d\n\n", myClass->testMember);
 	OutputDebugStringA(someValue);
 
-
+	//-- testing glm
+	glm::vec4 color(1.0f, 0, 0, 1.0f);
+	sprintf(someValue, "\n\nValue of color : [%f, %f, %f, %f]\n\n", color.r, color.g, color.b, color.a);
+	OutputDebugStringA(someValue);
 
 	//While the window is valid
 	while (!glfwWindowShouldClose(window))

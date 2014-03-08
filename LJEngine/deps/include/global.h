@@ -1,5 +1,5 @@
 #include <boost\shared_ptr.hpp>
-//#include <glm\glm.hpp>
+#include <glm\glm.hpp>
 
 //-- Boost shared pointer typedef
 //-- usage: 
