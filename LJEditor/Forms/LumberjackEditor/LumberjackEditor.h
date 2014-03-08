@@ -30,6 +30,7 @@ namespace LJEditor {
 			InitializeComponent();
 			//
 			GLWindow = gcnew COpenGL(this, this->GLWindowPB);
+			GLWindow2 = gcnew COpenGL(this, this->GLWindowPB2);
 			//
 		}
 
@@ -78,6 +79,8 @@ namespace LJEditor {
 	private: System::Windows::Forms::PictureBox^  GLWindowPB;
 	private: System::Windows::Forms::TabPage^  ExportTool;
 	private: System::Windows::Forms::RichTextBox^  LogWindow;
+	private: System::Windows::Forms::PictureBox^  GLWindowPB2;
+
 
 
 
@@ -90,6 +93,7 @@ namespace LJEditor {
 		/// </summary>
 
 		OpenGLForm::COpenGL ^ GLWindow;
+		OpenGLForm::COpenGL ^ GLWindow2;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -117,6 +121,7 @@ namespace LJEditor {
 			this->GLWindowPB = (gcnew System::Windows::Forms::PictureBox());
 			this->ExportTool = (gcnew System::Windows::Forms::TabPage());
 			this->LogWindow = (gcnew System::Windows::Forms::RichTextBox());
+			this->GLWindowPB2 = (gcnew System::Windows::Forms::PictureBox());
 			this->MainMS->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->LogSC))->BeginInit();
 			this->LogSC->Panel1->SuspendLayout();
@@ -125,6 +130,7 @@ namespace LJEditor {
 			this->ToolsTC->SuspendLayout();
 			this->GameWindow->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->GLWindowPB))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->GLWindowPB2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// UpdateTimer
@@ -231,6 +237,7 @@ namespace LJEditor {
 			// 
 			// LogSC.Panel2
 			// 
+			this->LogSC->Panel2->Controls->Add(this->GLWindowPB2);
 			this->LogSC->Panel2->Controls->Add(this->LogWindow);
 			this->LogSC->Panel2->Cursor = System::Windows::Forms::Cursors::Default;
 			this->LogSC->Panel2->RightToLeft = System::Windows::Forms::RightToLeft::No;
@@ -292,6 +299,14 @@ namespace LJEditor {
 			this->LogWindow->TabStop = false;
 			this->LogWindow->Text = L"LogWindow";
 			// 
+			// GLWindowPB2
+			// 
+			this->GLWindowPB2->Location = System::Drawing::Point(610, 14);
+			this->GLWindowPB2->Name = L"GLWindowPB2";
+			this->GLWindowPB2->Size = System::Drawing::Size(206, 96);
+			this->GLWindowPB2->TabIndex = 7;
+			this->GLWindowPB2->TabStop = false;
+			// 
 			// LumberjackEditor
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -311,6 +326,7 @@ namespace LJEditor {
 			this->ToolsTC->ResumeLayout(false);
 			this->GameWindow->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->GLWindowPB))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->GLWindowPB2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -320,8 +336,16 @@ namespace LJEditor {
 			 {
 				 UNREFERENCED_PARAMETER(sender);
 				 UNREFERENCED_PARAMETER(e);
+
+				 wglMakeCurrent( GLWindow->getWindowHandle(), GLWindow->getGLContextHandler() );
+
 				 GLWindow->Render();
 				 GLWindow->SwapOpenGLBuffers();
+
+				 wglMakeCurrent( GLWindow2->getWindowHandle(), GLWindow2->getGLContextHandler() );
+
+				 GLWindow2->Render();
+				 GLWindow2->SwapOpenGLBuffers();
 			 }
 	private: 
 		System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 

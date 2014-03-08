@@ -61,6 +61,16 @@ namespace OpenGLForm
 			ReSizeGLScene(x, y);
 		}
 
+		HDC getWindowHandle()
+		{
+			return m_hDC;
+		}
+
+		HGLRC getGLContextHandler()
+		{
+			return m_hglrc;
+		}
+
 	private:
 		HDC m_hDC;
 		HGLRC m_hglrc;

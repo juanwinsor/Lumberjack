@@ -110,6 +110,11 @@
   <ItemGroup>
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\LumberjackEditor\LumberjackEditor.resx">
+      <DependentUpon>LumberjackEditor.h</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
