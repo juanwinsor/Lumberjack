@@ -60,6 +60,8 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 	sprintf(someValue, "\n\nValue of color : [%f, %f, %f, %f]\n\n", color.r, color.g, color.b, color.a);
 	OutputDebugStringA(someValue);
 
+	glm::mat4 test = glm::ortho<float>(0, 0, 100.0f, 100.0f);
+
 	//While the window is valid
 	while (!glfwWindowShouldClose(window))
     {

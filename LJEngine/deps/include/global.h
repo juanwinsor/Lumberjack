@@ -1,5 +1,10 @@
+//-- boost
 #include <boost\shared_ptr.hpp>
+
+//-- glm and extensions
 #include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
+
 
 //-- Boost shared pointer typedef
 //-- usage: 
