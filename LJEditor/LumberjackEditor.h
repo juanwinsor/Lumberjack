@@ -330,6 +330,10 @@ namespace LJEditor {
 private: System::Void GLWindowPB_SizeChanged(System::Object^  sender, System::EventArgs^  e) 
 {
 	GLWindow->UpdateGLSceneSize(GLWindowPB->Width,GLWindowPB->Height);
+
+	//-- fix for window resize
+	UINT flags = SWP_NOZORDER | SWP_NOACTIVATE;
+	SetWindowPos((HWND)GLWindow->Handle.ToPointer(), 0, 0, 0, GLWindowPB->Width, GLWindowPB->Height, flags);
 }
 };
 }
