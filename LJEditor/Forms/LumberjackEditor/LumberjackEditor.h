@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGL.h"
+#include "Components/CGLWindow.h"
 #include "GLFWTest.h"
 
 namespace LJEditor {
@@ -14,7 +14,7 @@ namespace LJEditor {
 	using namespace OpenGLForm;
 
 	/// <summary>
-	/// Summary for Form1
+	/// Summary for LumberjackEditor
 	///
 	/// WARNING: If you change the name of this class, you will need to change the
 	///          'Resource File Name' property for the managed resource compiler tool
@@ -22,10 +22,10 @@ namespace LJEditor {
 	///          the designers will not be able to interact properly with localized
 	///          resources associated with this form.
 	/// </summary>
-	public ref class Form1 : public System::Windows::Forms::Form
+	public ref class LumberjackEditor : public System::Windows::Forms::Form
 	{
 	public:
-		Form1(void)
+		LumberjackEditor(void)
 		{
 			InitializeComponent();
 			//
@@ -37,7 +37,7 @@ namespace LJEditor {
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		~Form1()
+		~LumberjackEditor()
 		{
 			if (components)
 			{
@@ -131,7 +131,7 @@ namespace LJEditor {
 			// 
 			this->UpdateTimer->Enabled = true;
 			this->UpdateTimer->Interval = 10;
-			this->UpdateTimer->Tick += gcnew System::EventHandler(this, &Form1::timer1_Tick);
+			this->UpdateTimer->Tick += gcnew System::EventHandler(this, &LumberjackEditor::timer1_Tick);
 			// 
 			// MainMS
 			// 
@@ -268,7 +268,7 @@ namespace LJEditor {
 			this->GLWindowPB->Size = System::Drawing::Size(994, 531);
 			this->GLWindowPB->TabIndex = 0;
 			this->GLWindowPB->TabStop = false;
-			this->GLWindowPB->SizeChanged += gcnew System::EventHandler(this, &Form1::GLWindowPB_SizeChanged);
+			this->GLWindowPB->SizeChanged += gcnew System::EventHandler(this, &LumberjackEditor::GLWindowPB_SizeChanged);
 			// 
 			// ExportTool
 			// 
@@ -282,6 +282,7 @@ namespace LJEditor {
 			// 
 			// LogWindow
 			// 
+			this->LogWindow->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->LogWindow->Enabled = false;
 			this->LogWindow->Location = System::Drawing::Point(0, 0);
 			this->LogWindow->Name = L"LogWindow";
@@ -291,7 +292,7 @@ namespace LJEditor {
 			this->LogWindow->TabStop = false;
 			this->LogWindow->Text = L"LogWindow";
 			// 
-			// Form1
+			// LumberjackEditor
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -299,7 +300,7 @@ namespace LJEditor {
 			this->Controls->Add(this->LogSC);
 			this->Controls->Add(this->MainMS);
 			this->MainMenuStrip = this->MainMS;
-			this->Name = L"Form1";
+			this->Name = L"LumberjackEditor";
 			this->Text = L"LumberjackEditor";
 			this->MainMS->ResumeLayout(false);
 			this->MainMS->PerformLayout();

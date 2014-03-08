@@ -1,7 +1,7 @@
 // LJEditor.cpp : main project file.
 
 #include "stdafx.h"
-#include "LumberjackEditor.h"
+#include "Forms/LumberjackEditor/LumberjackEditor.h"
 
 using namespace LJEditor;
 
@@ -13,6 +13,6 @@ int main(array<System::String ^> ^args)
 	Application::SetCompatibleTextRenderingDefault(false); 
 
 	// Create the main window and run it
-	Application::Run(gcnew Form1());
+	Application::Run(gcnew LumberjackEditor());
 	return 0;
 }
