@@ -91,7 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Forms\ComponentTool\ComponentTool.cpp" />
     <ClCompile Include="Forms\Export\Export.cpp" />
+    <ClCompile Include="Forms\LumberjackEditor\LumberjackEditor.cpp" />
     <ClCompile Include="LJEditor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -100,7 +102,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\CGLWindow.h" />
-    <ClInclude Include="Forms\Export\Export.h" />
+    <ClInclude Include="Controls\CGLWindow.h" />
+    <ClInclude Include="Forms\ComponentTool\ComponentTool.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Forms\Export\Export.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Forms\LumberjackEditor\LumberjackEditor.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -111,6 +119,12 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\ComponentTool\ComponentTool.resx">
+      <DependentUpon>ComponentTool.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Export\Export.resx">
+      <DependentUpon>Export.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\LumberjackEditor\LumberjackEditor.resx">
       <DependentUpon>LumberjackEditor.h</DependentUpon>
     </EmbeddedResource>

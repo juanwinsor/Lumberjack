@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Components/CGLWindow.h"
+#include "../../Controls/CGLWindow.h"
 #include "GLFWTest.h"
+#include "../../Forms/Export/Export.h"
+#include "../../Forms/ComponentTool/ComponentTool.h"
 
 namespace LJEditor {
 
@@ -31,7 +33,6 @@ namespace LJEditor {
 			//
 			GLWindow = gcnew COpenGL(this, this->GLWindowPB);
 			GLWindow2 = gcnew COpenGL(this, this->GLWindowPB2);
-			//
 		}
 
 	protected:
@@ -82,11 +83,6 @@ namespace LJEditor {
 	private: System::Windows::Forms::PictureBox^  GLWindowPB2;
 
 
-
-
-
-
-
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -120,8 +116,8 @@ namespace LJEditor {
 			this->GameWindow = (gcnew System::Windows::Forms::TabPage());
 			this->GLWindowPB = (gcnew System::Windows::Forms::PictureBox());
 			this->ExportTool = (gcnew System::Windows::Forms::TabPage());
-			this->LogWindow = (gcnew System::Windows::Forms::RichTextBox());
 			this->GLWindowPB2 = (gcnew System::Windows::Forms::PictureBox());
+			this->LogWindow = (gcnew System::Windows::Forms::RichTextBox());
 			this->MainMS->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->LogSC))->BeginInit();
 			this->LogSC->Panel1->SuspendLayout();
@@ -287,6 +283,14 @@ namespace LJEditor {
 			this->ExportTool->Text = L"ExportTool";
 			this->ExportTool->UseVisualStyleBackColor = true;
 			// 
+			// GLWindowPB2
+			// 
+			this->GLWindowPB2->Location = System::Drawing::Point(610, 14);
+			this->GLWindowPB2->Name = L"GLWindowPB2";
+			this->GLWindowPB2->Size = System::Drawing::Size(206, 96);
+			this->GLWindowPB2->TabIndex = 7;
+			this->GLWindowPB2->TabStop = false;
+			// 
 			// LogWindow
 			// 
 			this->LogWindow->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -299,14 +303,6 @@ namespace LJEditor {
 			this->LogWindow->TabStop = false;
 			this->LogWindow->Text = L"LogWindow";
 			// 
-			// GLWindowPB2
-			// 
-			this->GLWindowPB2->Location = System::Drawing::Point(610, 14);
-			this->GLWindowPB2->Name = L"GLWindowPB2";
-			this->GLWindowPB2->Size = System::Drawing::Size(206, 96);
-			this->GLWindowPB2->TabIndex = 7;
-			this->GLWindowPB2->TabStop = false;
-			// 
 			// LumberjackEditor
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -317,6 +313,7 @@ namespace LJEditor {
 			this->MainMenuStrip = this->MainMS;
 			this->Name = L"LumberjackEditor";
 			this->Text = L"LumberjackEditor";
+			this->Load += gcnew System::EventHandler(this, &LumberjackEditor::LumberjackEditor_Load);
 			this->MainMS->ResumeLayout(false);
 			this->MainMS->PerformLayout();
 			this->LogSC->Panel1->ResumeLayout(false);
@@ -360,6 +357,22 @@ private: System::Void GLWindowPB_SizeChanged(System::Object^  sender, System::Ev
 	UINT flags = SWP_NOZORDER | SWP_NOACTIVATE;
 	SetWindowPos((HWND)GLWindow->Handle.ToPointer(), 0, 0, 0, GLWindowPB->Width, GLWindowPB->Height, flags);
 }
+private: System::Void LumberjackEditor_Load(System::Object^  sender, System::EventArgs^  e) 
+		 {
+			 ComponentTool ^ newComponentTool = gcnew ComponentTool();
+			 newComponentTool->Show();
+
+			 Export ^ newExport = gcnew Export();
+			 newExport->Visible = false;		
+
+			 array<Control^> ^ ControlsForExport = gcnew array<Control^>(99);;
+			 newExport->Controls->CopyTo( ControlsForExport , 0 );
+			 int numOfControls = newExport->Controls->Count;
+			 for(int counter =0; counter < numOfControls ; counter ++ )
+			 {
+				 this->ExportTool->Controls->Add( ControlsForExport[counter] );
+			 }
+		 }
 };
 }
 
