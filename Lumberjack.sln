@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LJEditor", "LJEditor\LJEditor.vcxproj", "{863444D9-30B6-42C1-9567-53BEA7A617A5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWinApp", "TestWinApp\TestWinApp.vcxproj", "{75AE5D47-E7D3-497A-8366-6475544153A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CBC339F4-C25A-4226-95A9-559CEB7C12D7} = {CBC339F4-C25A-4226-95A9-559CEB7C12D7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LJEngine", "LJEngine\LJEngine.vcxproj", "{CBC339F4-C25A-4226-95A9-559CEB7C12D7}"
 EndProject

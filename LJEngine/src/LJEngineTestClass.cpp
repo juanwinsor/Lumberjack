@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 //TODO: JUAN TEACH ME HOW TO MAKE THIS INCLUDED EVERYWHERE!!
-#include <global.h>
+//#include <global.h>
 
 //Temp
 #include <GLFW\glfw3.h>
