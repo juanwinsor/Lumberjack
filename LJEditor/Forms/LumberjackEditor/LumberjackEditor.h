@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Controls/CGLWindow.h"
-#include "GLFWTest.h"
+#include <TestLib\GLFWTest.h>
 #include "../../Forms/Export/Export.h"
 #include "../../Forms/ComponentTool/ComponentTool.h"
 

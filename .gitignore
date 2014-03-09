@@ -7,3 +7,4 @@
 build
 *.sdf
 *.opensdf
+TestWinApp.vcxproj.user

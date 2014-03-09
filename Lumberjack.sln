@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LJEngine", "LJEngine\LJEngine.vcxproj", "{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LJEditor", "LJEditor\LJEditor.vcxproj", "{863444D9-30B6-42C1-9567-53BEA7A617A5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWinApp", "TestWinApp\TestWinApp.vcxproj", "{75AE5D47-E7D3-497A-8366-6475544153A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805} = {0F60B87E-15E8-4FB7-9E63-FF6660AFF805}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LJEngine", "LJEngine\LJEngine.vcxproj", "{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +16,18 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Debug|Win32.Build.0 = Debug|Win32
-		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Release|Win32.ActiveCfg = Release|Win32
-		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Release|Win32.Build.0 = Release|Win32
 		{863444D9-30B6-42C1-9567-53BEA7A617A5}.Debug|Win32.ActiveCfg = Debug|Win32
 		{863444D9-30B6-42C1-9567-53BEA7A617A5}.Debug|Win32.Build.0 = Debug|Win32
 		{863444D9-30B6-42C1-9567-53BEA7A617A5}.Release|Win32.ActiveCfg = Release|Win32
 		{863444D9-30B6-42C1-9567-53BEA7A617A5}.Release|Win32.Build.0 = Release|Win32
+		{75AE5D47-E7D3-497A-8366-6475544153A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{75AE5D47-E7D3-497A-8366-6475544153A3}.Debug|Win32.Build.0 = Debug|Win32
+		{75AE5D47-E7D3-497A-8366-6475544153A3}.Release|Win32.ActiveCfg = Release|Win32
+		{75AE5D47-E7D3-497A-8366-6475544153A3}.Release|Win32.Build.0 = Release|Win32
+		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Debug|Win32.Build.0 = Debug|Win32
+		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Release|Win32.ActiveCfg = Release|Win32
+		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

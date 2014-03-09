@@ -60,7 +60,7 @@ namespace LJEditor {
 			this->treeView1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->treeView1->Location = System::Drawing::Point(0, 0);
 			this->treeView1->Name = L"treeView1";
-			this->treeView1->Size = System::Drawing::Size(121, 539);
+			this->treeView1->Size = System::Drawing::Size(467, 539);
 			this->treeView1->TabIndex = 0;
 			// 
 			// ComponentTool
@@ -83,28 +83,64 @@ namespace LJEditor {
 			int tmep = 0;
 			treeView1->Nodes->Add("1","Test");
 
-			//TreeNode ^ node = CreateNodesFromDirectory("C:\TEST");//gcnew TreeNode("Testy");
+			ImageList^ myImageList = gcnew ImageList;
 
-			//treeView1->Nodes->Add(node);
+			String^ textureLocation = Application::StartupPath;
+
+			String^ textureFolderPath = String::Concat( textureLocation + "\\..\\..\\..\\LJEditor\\Content\\Textures\\TreeViewTextures");//../../../LJEditor/Content/Textures/TreeViewTextures/FolderClosed.png");
+
+			//folderClosedPath = "C:\\Users\\Brendan\\Downloads\\Desktop\\LumberJack\\Lumberjack\\build\\Debug\\LJEditor\\FolderClosed.png";
+
+			myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderClosed.png") ) );
+			myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderOpen.png" ) ) );
+
+			treeView1->ImageList = myImageList;
+
+			TreeNode ^ node = CreateNodesFromDirectory("C:/TEST" , true );//gcnew TreeNode("Testy");
+
+			treeView1->Nodes->Add(node);
 
 			//treeView1->Nodes->Add();
 			//String^ temp = "words";
 		}
 
-		static TreeNode^ CreateNodesFromDirectory(String^ directoryPath)
+		static TreeNode^ CreateNodesFromDirectory(String^ directoryPath , bool removeParentPathNames )
 		{
-			TreeNode ^ node = gcnew TreeNode(directoryPath);
+			TreeNode ^ node;
+			if( removeParentPathNames )
+			{
+				node = gcnew TreeNode( Path::GetFileNameWithoutExtension( directoryPath ));
+			}
+			else
+			{
+				node = gcnew TreeNode( directoryPath );
+			}
 
 			array<String^>^ subDirectories = Directory::GetDirectories( directoryPath );
 			 
-			/*
 			for( int counter = 0; counter < subDirectories->Length; counter++ )
 			{
-				TreeNode^ subDirectory =  gcnew TreeNode(subDirectories[counter]);
+				String ^ directoryName = subDirectories[counter];
+
+				TreeNode^ subDirectory = CreateNodesFromDirectory( directoryName , removeParentPathNames );// gcnew TreeNode(subDirectories[counter]);
+				
+				subDirectory->ImageIndex = 0;
 
 				node->Nodes->Add(subDirectory);
-			}*/
 
+				array<String^>^ filesInDirectory = Directory::GetFiles(subDirectories[counter]);
+
+				for( int counter2 = 0; counter2 < filesInDirectory->Length; counter2++ )
+				{
+					String^ fileName = filesInDirectory[counter2];
+					if( removeParentPathNames )
+					{
+						fileName = Path::GetFileNameWithoutExtension(fileName);
+					}
+					TreeNode^ fileInDirectory = gcnew TreeNode(fileName);
+					subDirectory->Nodes->Add( fileInDirectory );
+				}
+			}
 			return node;
 		}
 	};

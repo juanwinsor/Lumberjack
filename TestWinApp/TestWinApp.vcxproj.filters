@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\LJEngineTestClass.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\LJEngineTestClass.cpp">
+    <ClCompile Include="src\WinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

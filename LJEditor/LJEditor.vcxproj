@@ -41,11 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)build\$(Configuration)\$(ProjectName)</OutDir>
-    <IntDir>build\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)</OutDir>
+    <IntDir>$(ProjectDir)build\intermidiate</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)</OutDir>
+    <IntDir>$(ProjectDir)build\intermidiate</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -53,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(ProjectDir)GLFWTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)deps\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsManaged>true</CompileAsManaged>
     </ClCompile>
     <Link>
@@ -61,22 +63,31 @@
       <AdditionalDependencies>TestLib.lib;openGL32.lib;glu32.lib;gdi32.lib;User32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
-      <AdditionalLibraryDirectories>$(ProjectDir)GLFWTest\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy /d /s /i /y "$(SolutionDir)LJEngine\build\$(Configuration)\*.dll" "$(ProjectDir)deps\lib\$(Configuration)\"</Command>
+      <Message>Copy all dlls from the engine dir into the local deps dir</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(ProjectDir)deps\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>TestLib.lib;openGL32.lib;glu32.lib;gdi32.lib;User32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
+      <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy /d /s /i /y "$(SolutionDir)LJEngine\build\$(Configuration)\*.dll" "$(ProjectDir)deps\lib\$(Configuration)\"</Command>
+      <Message>Copy all dlls from the engine dir into the local deps dir</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -102,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\CGLWindow.h" />
+    <ClInclude Include="Controls\CFileBrowser.h" />
     <ClInclude Include="Controls\CGLWindow.h" />
     <ClInclude Include="Forms\ComponentTool\ComponentTool.h">
       <FileType>CppForm</FileType>

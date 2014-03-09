@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <gl/Gl.h>
 #include <gl/Glu.h>
-#include "GLFWTest.h"
+#include <TestLib\GLFWTest.h>
 
 using namespace System::Windows::Forms;
 
