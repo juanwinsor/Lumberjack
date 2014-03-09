@@ -1,11 +1,13 @@
 //Needed
 #include <windows.h>
-
 #include <stdlib.h>
+
+//TODO: JUAN TEACH ME HOW TO MAKE THIS INCLUDED EVERYWHERE!!
+#include <global.h>
 
 //Temp
 #include <GLFW\glfw3.h>
-#include <TestLib\GLFWTest.h>
+#include "LJEngineTestClass.h"
 
 //test class
 class testClass
@@ -22,11 +24,14 @@ BOOST_PTR_DEF(testClass);
 /*!
  *
  */
-int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+void EngineTestClass::InitEngine()
 {
 	//Initializing GLFW.  Must be done before any glfw calls can be made
 	glfwInit();
+}
 
+void EngineTestClass::RenderTriangle()
+{
 	//Reference to the window we will make
     GLFWwindow* window;
 	//Create the window with whatever parameters we want
@@ -44,10 +49,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 	//Make the new window the focus
     glfwMakeContextCurrent(window);
-
-	GLFWTest::clearToCornflowerBlue();
-
-
 
 	//-- testing shared pointer macro
 	testClassPtr myClass = testClassPtr( new testClass() );

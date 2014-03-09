@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Components/CGLWindow.h"
-#include "GLFWTest.h"
+#include <TestLib\GLFWTest.h>
 
 namespace LJEditor {
 

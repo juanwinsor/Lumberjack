@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CBC339F4-C25A-4226-95A9-559CEB7C12D7}</ProjectGuid>
+    <ProjectGuid>{75AE5D47-E7D3-497A-8366-6475544153A3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LJEngine</RootNamespace>
+    <RootNamespace>TestWinApp</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -39,13 +39,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\intermidiate</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)</OutDir>
-    <IntDir>build\intermidiate</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -53,24 +51,24 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LJENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)deps\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)LJEngine\include;$(ProjectDir)deps\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32sd.lib;glfw3.lib;opengl32.lib;TestLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LJEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Message>Copy all dlls &amp; libs from the engine dir into the local deps dir</Message>
+      <Command>xcopy /d /s /i /y "$(SolutionDir)build\LJEngine\$(Configuration)\*.dll" "$(ProjectDir)deps\lib\$(Configuration)\"
+xcopy /d /s /i /y "$(SolutionDir)build\LJEngine\$(Configuration)\*.lib" "$(ProjectDir)deps\lib\$(Configuration)\"</Command>
+    </PreBuildEvent>
     <PreLinkEvent>
       <Command>xcopy /d /s /i /y "$(ProjectDir)deps\lib\$(Configuration)\*.dll" "$(OutDir)"</Command>
       <Message>Copy dll deps into output dir</Message>
     </PreLinkEvent>
-    <PostBuildEvent>
-      <Command>rd /S /Q "$(ProjectDir)include\LJEngine"
-xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Command>
-      <Message>Copies headers (keeping folder structure) to the "include" folder</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -80,32 +78,24 @@ xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Comman
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LJENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)deps\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)LJEngine\include;$(ProjectDir)deps\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32sd.lib;glfw3.lib;opengl32.lib;TestLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LJEngine.dll;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreLinkEvent>
-      <Command>xcopy /d /s /i /y "$(ProjectDir)deps\lib\$(Configuration)\*.dll" "$(OutDir)"</Command>
-      <Message>Copy dll deps into output dir</Message>
-    </PreLinkEvent>
-    <PostBuildEvent>
-      <Command>rd /S /Q "$(ProjectDir)include\LJEngine"
-xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Command>
-      <Message>Copies headers (keeping folder structure) to the "include" folder</Message>
-    </PostBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy all dlls from the engine dir into the local deps dir</Message>
+      <Command>xcopy /d /s /i /y "$(SolutionDir)LJEngine\build\$(Configuration)\*.dll" "$(ProjectDir)deps\lib\$(Configuration)\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\LJEngineTestClass.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\LJEngineTestClass.cpp" />
+    <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
