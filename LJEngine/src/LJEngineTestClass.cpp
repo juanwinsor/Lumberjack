@@ -2,9 +2,6 @@
 #include <windows.h>
 #include <stdlib.h>
 
-//TODO: JUAN TEACH ME HOW TO MAKE THIS INCLUDED EVERYWHERE!!
-//#include <global.h>
-
 //Temp
 #include <GLFW\glfw3.h>
 #include "LJEngineTestClass.h"
