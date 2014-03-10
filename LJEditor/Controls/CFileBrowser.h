@@ -36,7 +36,8 @@ public:
 		//Find the location of our images
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderClosed.png") ) );
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderOpen.png" ) ) );
-		
+		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\File.png" ) ) );
+
 		m_TreeView->ImageList = myImageList;
 
 		TreeNode ^ node = CreateNodesFromDirectory( directoryName , true );//gcnew TreeNode("Testy");
@@ -80,6 +81,9 @@ public:
 				}
 				TreeNode^ fileInDirectory = gcnew TreeNode(fileName);
 				subDirectory->Nodes->Add( fileInDirectory );
+
+				fileInDirectory->ImageIndex = 2;
+				fileInDirectory->SelectedImageIndex = 2;
 			}
 		}
 		return node;
@@ -90,9 +94,11 @@ private:
 	System::Void m_TreeView_BeforeExpand(System::Object^  sender, System::Windows::Forms::TreeViewCancelEventArgs^  e) 
 	{
 		e->Node->ImageIndex = 1;
+		e->Node->SelectedImageIndex = 1;
 	}
 	System::Void m_TreeView_BeforeCollapse(System::Object^  sender, System::Windows::Forms::TreeViewCancelEventArgs^  e) 
 	{
 		e->Node->ImageIndex = 0;
+		e->Node->SelectedImageIndex = 0;
 	}
 };
