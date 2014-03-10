@@ -1,5 +1,4 @@
 //-- boost
-//#include "../../../deps/include/boost/shared_ptr.hpp"
 #include <boost/shared_ptr.hpp>
 
 //-- glm and extensions
@@ -12,4 +11,4 @@
 //-- BOOST_PTR_DEF( testClass );
 //-- testClassPtr instance = testClassPtr( new testClass() );
 #define BOOST_PTR_DEF( typeName ) \
-typedef boost::shared_ptr<typeName> typeName##Ptr
+	typedef boost::shared_ptr<typeName> typeName##Ptr
