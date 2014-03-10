@@ -37,11 +37,12 @@ public:
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderClosed.png") ) );
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderOpen.png" ) ) );
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\File.png" ) ) );
+		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderEmpty.png" ) ) );
 
 		m_TreeView->ImageList = myImageList;
 
 		TreeNode ^ node = CreateNodesFromDirectory( directoryName , true );//gcnew TreeNode("Testy");
-
+		node->Expand();
 		m_TreeView->Nodes->Add(node);
 
 	}
@@ -70,7 +71,15 @@ public:
 
 			node->Nodes->Add(subDirectory);
 
+			array<String^>^ nextSubDirectories = Directory::GetDirectories( directoryName );
+
 			array<String^>^ filesInDirectory = Directory::GetFiles(subDirectories[counter]);
+
+			if( filesInDirectory->Length <= 0 && nextSubDirectories->Length <= 0 )
+			{
+				subDirectory->ImageIndex = 3;
+				subDirectory->SelectedImageIndex = 3;
+			}
 
 			for( int counter2 = 0; counter2 < filesInDirectory->Length; counter2++ )
 			{
@@ -85,6 +94,7 @@ public:
 				fileInDirectory->ImageIndex = 2;
 				fileInDirectory->SelectedImageIndex = 2;
 			}
+
 		}
 		return node;
 	}

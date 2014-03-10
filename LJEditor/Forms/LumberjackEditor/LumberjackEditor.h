@@ -376,7 +376,7 @@ private:
 		ComponentTool ^ newComponentTool = gcnew ComponentTool();
 		newComponentTool->SetUpFileBrowser();
 
-		array<Control^> ^ ControlsForComponentTool = gcnew array<Control^>(99);;
+		array<Control^> ^ ControlsForComponentTool = gcnew array<Control^>(99);
 		newComponentTool->Controls->CopyTo( ControlsForComponentTool , 0 );
 		int numOfControls = newComponentTool->Controls->Count;
 		for(int counter =0; counter < numOfControls ; counter ++ )
@@ -387,7 +387,7 @@ private:
 		Export ^ newExport = gcnew Export();
 		newExport->Visible = false;		
 
-		array<Control^> ^ ControlsForExport = gcnew array<Control^>(99);;
+		array<Control^> ^ ControlsForExport = gcnew array<Control^>(99);
 		newExport->Controls->CopyTo( ControlsForExport , 0 );
 		numOfControls = newExport->Controls->Count;
 		for(int counter =0; counter < numOfControls ; counter ++ )
