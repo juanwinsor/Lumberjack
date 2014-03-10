@@ -42,7 +42,7 @@ namespace LJEditor {
 	private: System::Windows::Forms::SplitContainer^  scMain;
 	protected: 
 	private: System::Windows::Forms::TreeView^  tvFileBrowser;
-	private: System::Windows::Forms::PropertyGrid^  propertyGrid1;
+
 
 
 	protected: 
@@ -52,7 +52,8 @@ namespace LJEditor {
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container ^components;
-		ComponentInformation^ m_ComponentInfo;
+	private: System::Windows::Forms::DataGridView^  dataGridView1;
+			 ComponentInformation^ m_ComponentInfo;
 		
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -63,11 +64,12 @@ namespace LJEditor {
 		{
 			this->scMain = (gcnew System::Windows::Forms::SplitContainer());
 			this->tvFileBrowser = (gcnew System::Windows::Forms::TreeView());
-			this->propertyGrid1 = (gcnew System::Windows::Forms::PropertyGrid());
+			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->BeginInit();
 			this->scMain->Panel1->SuspendLayout();
 			this->scMain->Panel2->SuspendLayout();
 			this->scMain->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// scMain
@@ -82,7 +84,7 @@ namespace LJEditor {
 			// 
 			// scMain.Panel2
 			// 
-			this->scMain->Panel2->Controls->Add(this->propertyGrid1);
+			this->scMain->Panel2->Controls->Add(this->dataGridView1);
 			this->scMain->Size = System::Drawing::Size(915, 539);
 			this->scMain->SplitterDistance = 170;
 			this->scMain->TabIndex = 0;
@@ -95,13 +97,14 @@ namespace LJEditor {
 			this->tvFileBrowser->Size = System::Drawing::Size(170, 539);
 			this->tvFileBrowser->TabIndex = 0;
 			// 
-			// propertyGrid1
+			// dataGridView1
 			// 
-			this->propertyGrid1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->propertyGrid1->Location = System::Drawing::Point(0, 0);
-			this->propertyGrid1->Name = L"propertyGrid1";
-			this->propertyGrid1->Size = System::Drawing::Size(741, 539);
-			this->propertyGrid1->TabIndex = 0;
+			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->dataGridView1->Location = System::Drawing::Point(0, 0);
+			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->Size = System::Drawing::Size(741, 539);
+			this->dataGridView1->TabIndex = 0;
 			// 
 			// ComponentTool
 			// 
@@ -116,6 +119,7 @@ namespace LJEditor {
 			this->scMain->Panel2->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->EndInit();
 			this->scMain->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -128,11 +132,35 @@ namespace LJEditor {
 	public:
 		void SetUpFileBrowser()
 		{
-			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\" ));
+			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\" ), true );
 
 			m_ComponentInfo = gcnew ComponentInformation();
+			m_ComponentInfo->Name = "TestName";
+			//this->propertyGrid1->SelectedObject = m_ComponentInfo;
 
-			this->propertyGrid1->SelectedObject = m_ComponentInfo;
+			CreateComponentTable( m_ComponentInfo );
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		/// takes a components information and constructs a table from the values
+		//////////////////////////////////////////////////////////////////////////
+		void CreateComponentTable ( ComponentInformation ^ componentInformation )
+		{
+			
+			String^ baseClassVar = System::Convert::ToString( componentInformation->BaseClass );
+			
+			//creating a new column and setting them so they aren't sortable
+			this->dataGridView1->Columns->Add("Name", "Name");
+			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+
+			this->dataGridView1->Columns->Add("Type", "Type");
+			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+
+			this->dataGridView1->Columns->Add("Value", "Value");
+			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+
+			this->dataGridView1->Columns->Add("Discription", "Discription");
+			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
 		}
 	};
 }

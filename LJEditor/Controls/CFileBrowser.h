@@ -17,37 +17,50 @@ public ref class CFileBrowser
 private:
 	//This is the tree view that we will be effecting
 	TreeView^ m_TreeView;
+	String^ m_TextureLocation;
+	ImageList^ m_ImageList;
+	ToolStrip^ m_ToolStrip;
+	String^ m_DirectoryName;
+
+	System::Windows::Forms::ToolStripButton^ m_ToggleEmptyFolderButton;
+	System::Windows::Forms::ToolStripButton^ m_ToggleFileExtensions;
+	
 
 public:
-	CFileBrowser( TreeView^  treeView , String^ directoryName )
+	CFileBrowser( TreeView^  treeView , String^ directoryName , bool createTaskBar)
 	{
 		//Init our tree view
 		m_TreeView = treeView;
-
+		m_DirectoryName = directoryName;
 		
 		m_TreeView->BeforeCollapse += gcnew System::Windows::Forms::TreeViewCancelEventHandler(this, &CFileBrowser::m_TreeView_BeforeCollapse);
 		m_TreeView->BeforeExpand += gcnew System::Windows::Forms::TreeViewCancelEventHandler(this, &CFileBrowser::m_TreeView_BeforeExpand);
 
-		String^ textureLocation = Application::StartupPath;
+		m_TextureLocation = Application::StartupPath;
 
-		String^ textureFolderPath = String::Concat( textureLocation + "\\..\\..\\..\\LJEditor\\Content\\Textures\\TreeViewTextures");
+		m_TextureLocation = String::Concat( m_TextureLocation + "\\..\\..\\..\\LJEditor\\Content\\Textures\\TreeViewTextures");
 		//Create a new ImageList for our objects
-		ImageList^ myImageList = gcnew ImageList;
+		m_ImageList = gcnew ImageList;
 		//Find the location of our images
-		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderClosed.png") ) );
-		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderOpen.png" ) ) );
-		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\File.png" ) ) );
-		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderEmpty.png" ) ) );
+		m_ImageList->Images->Add( Image::FromFile( String::Concat(m_TextureLocation + "\\FolderClosed.png") ) );
+		m_ImageList->Images->Add( Image::FromFile( String::Concat(m_TextureLocation + "\\FolderOpen.png" ) ) );
+		m_ImageList->Images->Add( Image::FromFile( String::Concat(m_TextureLocation + "\\File.png" ) ) );
+		m_ImageList->Images->Add( Image::FromFile( String::Concat(m_TextureLocation + "\\FolderEmpty.png" ) ) );
 
-		m_TreeView->ImageList = myImageList;
+		m_TreeView->ImageList = m_ImageList;
 
-		TreeNode ^ node = CreateNodesFromDirectory( directoryName , true );//gcnew TreeNode("Testy");
+		TreeNode ^ node = CreateNodesFromDirectory( directoryName , true , false );//gcnew TreeNode("Testy");
 		node->Expand();
 		m_TreeView->Nodes->Add(node);
 
+		if ( createTaskBar )
+		{
+			CreateTaskBar();
+		}
+
 	}
 
-	TreeNode^ CreateNodesFromDirectory(String^ directoryPath , bool removeParentPathNames )
+	TreeNode^ CreateNodesFromDirectory(String^ directoryPath , bool removeParentPathNames , bool removeEmptyPaths)
 	{
 		TreeNode ^ node;
 		if( removeParentPathNames )
@@ -65,11 +78,11 @@ public:
 		{
 			String ^ directoryName = subDirectories[counter];
 
-			TreeNode^ subDirectory = CreateNodesFromDirectory( directoryName , removeParentPathNames );// gcnew TreeNode(subDirectories[counter]);
+			TreeNode^ subDirectory = CreateNodesFromDirectory( directoryName , removeParentPathNames , removeEmptyPaths);// gcnew TreeNode(subDirectories[counter]);
 
 			subDirectory->ImageIndex = 0;
 
-			node->Nodes->Add(subDirectory);
+			
 
 			array<String^>^ nextSubDirectories = Directory::GetDirectories( directoryName );
 
@@ -79,6 +92,15 @@ public:
 			{
 				subDirectory->ImageIndex = 3;
 				subDirectory->SelectedImageIndex = 3;
+
+				if ( !removeEmptyPaths )
+				{
+					node->Nodes->Add(subDirectory);
+				}
+			}
+			else
+			{
+				node->Nodes->Add(subDirectory);
 			}
 
 			for( int counter2 = 0; counter2 < filesInDirectory->Length; counter2++ )
@@ -98,6 +120,34 @@ public:
 		}
 		return node;
 	}
+
+	void CreateTaskBar()
+	{
+
+		array<ToolStripItem^>^ newTooStripItems = gcnew array<ToolStripItem^>(3);
+		
+		newTooStripItems[0] = gcnew ToolStripDropDownButton("Test");//newTooStripItems);
+
+		m_ToolStrip = gcnew ToolStrip();
+		m_ToolStrip->Dock = DockStyle::Bottom;
+
+		this->m_TreeView->Parent->Controls->Add( m_ToolStrip );
+		
+		Image^ EmptyFolderImage = Image::FromFile( String::Concat(m_TextureLocation + "\\FolderEmpty.png" ) );
+		Image^ FileImage = Image::FromFile( String::Concat(m_TextureLocation + "\\File.png" ) );
+		
+		m_ToggleEmptyFolderButton = gcnew ToolStripButton(EmptyFolderImage);
+		m_ToggleEmptyFolderButton->Click += gcnew EventHandler(this, &CFileBrowser::ToggleEmptyFoldersButtonCheckedChanged);
+		m_ToggleEmptyFolderButton->ToolTipText = "ToggleEmptyFolders";
+		m_ToolStrip->Items->Add( m_ToggleEmptyFolderButton );
+
+		m_ToggleFileExtensions = gcnew ToolStripButton(FileImage);
+		m_ToggleFileExtensions->Click += gcnew EventHandler(this, &CFileBrowser::ToggleFileExtensionsCheckedChanged);
+		m_ToggleFileExtensions->ToolTipText = "ToggleEmptyFolders";
+		m_ToolStrip->Items->Add( m_ToggleFileExtensions );
+		//"ToggleEmptyFolders"
+		//newToolStrip->
+	}
 	
 private:
 
@@ -110,5 +160,77 @@ private:
 	{
 		e->Node->ImageIndex = 0;
 		e->Node->SelectedImageIndex = 0;
+	}
+
+	void ToggleEmptyFoldersButtonCheckedChanged(Object^ sender, EventArgs^ e)
+	{
+		m_ToggleEmptyFolderButton->Checked = !m_ToggleEmptyFolderButton->Checked;
+
+		if (m_ToggleEmptyFolderButton->Checked)
+		{ 
+			m_TreeView->Nodes->Clear();
+			TreeNode ^ node;
+			if( m_ToggleEmptyFolderButton->Checked )
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , true , true );
+			}
+			else
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , false , true );
+			}
+			node->Expand();
+			m_TreeView->Nodes->Add(node);
+		}
+		else
+		{ 
+			m_TreeView->Nodes->Clear();
+			TreeNode ^ node;
+			if( m_ToggleEmptyFolderButton->Checked )
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , true , false );
+			}
+			else
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , false , false );
+			}
+			node->Expand();
+			m_TreeView->Nodes->Add(node);
+		}
+	}
+
+	void ToggleFileExtensionsCheckedChanged(Object^ sender, EventArgs^ e)
+	{
+		m_ToggleFileExtensions->Checked = !m_ToggleFileExtensions->Checked;
+
+		if (m_ToggleFileExtensions->Checked)
+		{ 
+			m_TreeView->Nodes->Clear();
+			TreeNode ^ node;
+			if( m_ToggleEmptyFolderButton->Checked )
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , true , true );
+			}
+			else
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , true , false );
+			}
+			node->Expand();
+			m_TreeView->Nodes->Add(node);
+		}
+		else
+		{ 
+			m_TreeView->Nodes->Clear();
+			TreeNode ^ node;
+			if( m_ToggleEmptyFolderButton->Checked )
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , false , true );
+			}
+			else
+			{
+				node = CreateNodesFromDirectory( m_DirectoryName , false , false );
+			}
+			node->Expand();
+			m_TreeView->Nodes->Add(node);
+		}
 	}
 };
