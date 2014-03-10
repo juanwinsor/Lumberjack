@@ -15,23 +15,25 @@ using namespace System::IO;
 public ref class CFileBrowser
 {
 private:
-
+	//This is the tree view that we will be effecting
 	TreeView^ m_TreeView;
 
 public:
 	CFileBrowser( TreeView^  treeView , String^ directoryName )
 	{
+		//Init our tree view
 		m_TreeView = treeView;
 
+		
 		m_TreeView->BeforeCollapse += gcnew System::Windows::Forms::TreeViewCancelEventHandler(this, &CFileBrowser::m_TreeView_BeforeCollapse);
 		m_TreeView->BeforeExpand += gcnew System::Windows::Forms::TreeViewCancelEventHandler(this, &CFileBrowser::m_TreeView_BeforeExpand);
 
 		String^ textureLocation = Application::StartupPath;
 
 		String^ textureFolderPath = String::Concat( textureLocation + "\\..\\..\\..\\LJEditor\\Content\\Textures\\TreeViewTextures");
-		
+		//Create a new ImageList for our objects
 		ImageList^ myImageList = gcnew ImageList;
-
+		//Find the location of our images
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderClosed.png") ) );
 		myImageList->Images->Add( Image::FromFile( String::Concat(textureFolderPath + "\\FolderOpen.png" ) ) );
 		

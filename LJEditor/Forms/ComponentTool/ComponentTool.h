@@ -38,7 +38,10 @@ namespace LJEditor {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TreeView^  treeView1;
+	private: System::Windows::Forms::SplitContainer^  scMain;
+	protected: 
+	private: System::Windows::Forms::TreeView^  tvFileBrowser;
+
 	protected: 
 
 	private:
@@ -54,26 +57,46 @@ namespace LJEditor {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->treeView1 = (gcnew System::Windows::Forms::TreeView());
+			this->scMain = (gcnew System::Windows::Forms::SplitContainer());
+			this->tvFileBrowser = (gcnew System::Windows::Forms::TreeView());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->BeginInit();
+			this->scMain->Panel1->SuspendLayout();
+			this->scMain->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// treeView1
+			// scMain
 			// 
-			this->treeView1->Dock = System::Windows::Forms::DockStyle::Left;
-			this->treeView1->Location = System::Drawing::Point(0, 0);
-			this->treeView1->Name = L"treeView1";
-			this->treeView1->Size = System::Drawing::Size(467, 539);
-			this->treeView1->TabIndex = 0;
+			this->scMain->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->scMain->Location = System::Drawing::Point(0, 0);
+			this->scMain->Name = L"scMain";
+			// 
+			// scMain.Panel1
+			// 
+			this->scMain->Panel1->Controls->Add(this->tvFileBrowser);
+			this->scMain->Size = System::Drawing::Size(915, 539);
+			this->scMain->SplitterDistance = 170;
+			this->scMain->TabIndex = 0;
+			// 
+			// tvFileBrowser
+			// 
+			this->tvFileBrowser->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->tvFileBrowser->Location = System::Drawing::Point(0, 0);
+			this->tvFileBrowser->Name = L"tvFileBrowser";
+			this->tvFileBrowser->Size = System::Drawing::Size(170, 539);
+			this->tvFileBrowser->TabIndex = 0;
 			// 
 			// ComponentTool
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(915, 539);
-			this->Controls->Add(this->treeView1);
+			this->Controls->Add(this->scMain);
 			this->Name = L"ComponentTool";
 			this->Text = L"ComponentTool";
 			this->Load += gcnew System::EventHandler(this, &ComponentTool::ComponentTool_Load);
+			this->scMain->Panel1->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->EndInit();
+			this->scMain->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -81,7 +104,12 @@ namespace LJEditor {
 	private: 
 		System::Void ComponentTool_Load(System::Object^  sender, System::EventArgs^  e) 
 		{
-			CFileBrowser^ fileBrowser = gcnew CFileBrowser(treeView1,"c:\\TEST");
+			SetUpFileBrowser();
+		}
+	public:
+		void SetUpFileBrowser()
+		{
+			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\" ));
 		}
 	};
 }

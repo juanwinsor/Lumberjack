@@ -89,7 +89,8 @@ namespace LJEditor {
 		/// </summary>
 
 		OpenGLForm::COpenGL ^ GLWindow;
-		OpenGLForm::COpenGL ^ GLWindow2;
+	private: System::Windows::Forms::TabPage^  Component_Tool;
+			 OpenGLForm::COpenGL ^ GLWindow2;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -118,6 +119,7 @@ namespace LJEditor {
 			this->ExportTool = (gcnew System::Windows::Forms::TabPage());
 			this->GLWindowPB2 = (gcnew System::Windows::Forms::PictureBox());
 			this->LogWindow = (gcnew System::Windows::Forms::RichTextBox());
+			this->Component_Tool = (gcnew System::Windows::Forms::TabPage());
 			this->MainMS->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->LogSC))->BeginInit();
 			this->LogSC->Panel1->SuspendLayout();
@@ -245,6 +247,7 @@ namespace LJEditor {
 			// 
 			this->ToolsTC->Controls->Add(this->GameWindow);
 			this->ToolsTC->Controls->Add(this->ExportTool);
+			this->ToolsTC->Controls->Add(this->Component_Tool);
 			this->ToolsTC->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->ToolsTC->Location = System::Drawing::Point(0, 0);
 			this->ToolsTC->Name = L"ToolsTC";
@@ -303,6 +306,16 @@ namespace LJEditor {
 			this->LogWindow->TabStop = false;
 			this->LogWindow->Text = L"LogWindow";
 			// 
+			// Component_Tool
+			// 
+			this->Component_Tool->Location = System::Drawing::Point(4, 22);
+			this->Component_Tool->Name = L"ComponentTool";
+			this->Component_Tool->Padding = System::Windows::Forms::Padding(3);
+			this->Component_Tool->Size = System::Drawing::Size(1000, 537);
+			this->Component_Tool->TabIndex = 2;
+			this->Component_Tool->Text = L"ComponentTool";
+			this->Component_Tool->UseVisualStyleBackColor = true;
+			// 
 			// LumberjackEditor
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -357,22 +370,31 @@ private: System::Void GLWindowPB_SizeChanged(System::Object^  sender, System::Ev
 	UINT flags = SWP_NOZORDER | SWP_NOACTIVATE;
 	SetWindowPos((HWND)GLWindow->Handle.ToPointer(), 0, 0, 0, GLWindowPB->Width, GLWindowPB->Height, flags);
 }
-private: System::Void LumberjackEditor_Load(System::Object^  sender, System::EventArgs^  e) 
-		 {
-			 ComponentTool ^ newComponentTool = gcnew ComponentTool();
-			 newComponentTool->Show();
+private: 
+	System::Void LumberjackEditor_Load(System::Object^  sender, System::EventArgs^  e) 
+	{
+		ComponentTool ^ newComponentTool = gcnew ComponentTool();
+		newComponentTool->SetUpFileBrowser();
 
-			 Export ^ newExport = gcnew Export();
-			 newExport->Visible = false;		
+		array<Control^> ^ ControlsForComponentTool = gcnew array<Control^>(99);;
+		newComponentTool->Controls->CopyTo( ControlsForComponentTool , 0 );
+		int numOfControls = newComponentTool->Controls->Count;
+		for(int counter =0; counter < numOfControls ; counter ++ )
+		{
+			this->Component_Tool->Controls->Add( ControlsForComponentTool[counter] );
+		}
 
-			 array<Control^> ^ ControlsForExport = gcnew array<Control^>(99);;
-			 newExport->Controls->CopyTo( ControlsForExport , 0 );
-			 int numOfControls = newExport->Controls->Count;
-			 for(int counter =0; counter < numOfControls ; counter ++ )
-			 {
-				 this->ExportTool->Controls->Add( ControlsForExport[counter] );
-			 }
-		 }
+		Export ^ newExport = gcnew Export();
+		newExport->Visible = false;		
+
+		array<Control^> ^ ControlsForExport = gcnew array<Control^>(99);;
+		newExport->Controls->CopyTo( ControlsForExport , 0 );
+		numOfControls = newExport->Controls->Count;
+		for(int counter =0; counter < numOfControls ; counter ++ )
+		{
+			this->ExportTool->Controls->Add( ControlsForExport[counter] );
+		}
+	}
 };
 }
 
