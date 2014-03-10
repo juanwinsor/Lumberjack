@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LJEditor", "LJEditor\LJEditor.vcxproj", "{863444D9-30B6-42C1-9567-53BEA7A617A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F60B87E-15E8-4FB7-9E63-FF6660AFF805} = {0F60B87E-15E8-4FB7-9E63-FF6660AFF805}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWinApp", "TestWinApp\TestWinApp.vcxproj", "{75AE5D47-E7D3-497A-8366-6475544153A3}"
 	ProjectSection(ProjectDependencies) = postProject
