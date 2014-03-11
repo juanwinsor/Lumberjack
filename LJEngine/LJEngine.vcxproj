@@ -117,9 +117,13 @@ xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Comman
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core.h" />
+    <ClInclude Include="src\EntitySystem\Entity.h" />
     <ClInclude Include="src\LJEngineTestClass.h" />
+    <ClInclude Include="src\Time\GameTime.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\LJEngineTestClass.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
