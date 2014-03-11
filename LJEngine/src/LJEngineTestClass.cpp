@@ -6,6 +6,8 @@
 #include <GLFW\glfw3.h>
 #include "LJEngineTestClass.h"
 
+#include <Box2D/Box2D.h>
+
 //test class
 class testClass
 {
@@ -23,6 +25,11 @@ BOOST_PTR_DEF(testClass);
  */
 void EngineTestClass::InitEngine()
 {
+
+	b2Vec2 gravity(0, -1.0f);
+	//b2World world(gravity); //UNCOMMENT THIS TO EXPLODE LJEDITOR
+
+
 	//Initializing GLFW.  Must be done before any glfw calls can be made
 	glfwInit();
 }
@@ -75,7 +82,8 @@ void EngineTestClass::RenderTriangle()
         glViewport(0, 0, width, height);
 
 		//Clear the color every frame
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT);
+		Clear();
 
 		//Set up the projection matrix
         glMatrixMode(GL_PROJECTION);
@@ -109,4 +117,11 @@ void EngineTestClass::RenderTriangle()
 	//GLFW isn't needed, terminate it
     glfwTerminate();
     exit(EXIT_SUCCESS);
+}
+
+void EngineTestClass::Clear()
+{
+	glClearColor(0.392f, 0.584f, 0.929f, 1.0f); //cornflower blue
+	//Clear the color every frame
+	glClear(GL_COLOR_BUFFER_BIT);
 }

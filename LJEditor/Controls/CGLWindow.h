@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <gl/Gl.h>
 #include <gl/Glu.h>
-#include <TestLib\GLFWTest.h>
+#include <LJEngine/LJEngineTestClass.h>
 
 using namespace System::Windows::Forms;
 
@@ -48,7 +48,9 @@ namespace OpenGLForm
 
 		System::Void Render(System::Void)
 		{
-			GLFWTest::clearToCornflowerBlue();
+			EngineTestClass::Clear();
+
+			//GLFWTest::clearToCornflowerBlue();
 		}
 
 		System::Void SwapOpenGLBuffers(System::Void)
@@ -147,7 +149,11 @@ namespace OpenGLForm
 			glEnable(GL_DEPTH_TEST);							// Enables depth testing
 			glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
 			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations
-			GLFWTest::init();
+			//GLFWTest::init();
+
+			EngineTestClass::InitEngine();
+
+
 			return TRUE;										// Initialisation went ok
 		}
 

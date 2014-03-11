@@ -75,7 +75,7 @@ xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Comman
       <Message>Copies headers (keeping folder structure) to the "include" folder</Message>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>glew32sd.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32sd.lib;glfw3.lib;opengl32.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)deps\lib\$(Configuration)\</AdditionalLibraryDirectories>
