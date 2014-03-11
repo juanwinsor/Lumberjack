@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../../Controls/CGLWindow.h"
-#include <TestLib\GLFWTest.h>
 #include "../../Forms/Export/Export.h"
 #include "../../Forms/ComponentTool/ComponentTool.h"
+#include <Box2D/Box2D.h>
+#include <LJEngine/LJEngineTestClass.h>
 
 namespace LJEditor {
 
@@ -394,6 +395,8 @@ private:
 		{
 			this->ExportTool->Controls->Add( ControlsForExport[counter] );
 		}
+
+		EngineTestClass::InitEngine();
 	}
 };
 }

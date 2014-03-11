@@ -7,6 +7,8 @@ public:
 	static void InitEngine();
 
 	static void RenderTriangle();
+
+	static void Clear();
 };
 
 #endif
