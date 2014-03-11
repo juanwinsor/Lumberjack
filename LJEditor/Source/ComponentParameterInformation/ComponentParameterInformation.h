@@ -8,7 +8,10 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 
-
+namespace VariableTypes
+		{
+#define NAME = 0;
+		}
 
 
 public ref class ComponentParameterInformation
@@ -24,6 +27,18 @@ public:
 		void set ( String^ value )
 		{
 			m_Name = value;
+		}
+	}
+
+	property String^ Value
+	{
+		String^ get() 
+		{
+			return m_Value;
+		}
+		void set( String ^ value )
+		{
+			m_Value = value;
 		}
 	}
 
@@ -68,4 +83,5 @@ private:
 	int m_LoadType;
 	int m_VarType;
 	String^ m_Discription;
+	String^ m_Value;
 };

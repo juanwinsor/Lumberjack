@@ -105,6 +105,7 @@ namespace LJEditor {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->Size = System::Drawing::Size(741, 539);
 			this->dataGridView1->TabIndex = 0;
+
 			// 
 			// ComponentTool
 			// 
@@ -129,38 +130,154 @@ namespace LJEditor {
 		{
 			SetUpFileBrowser();
 		}
+
 	public:
+
 		void SetUpFileBrowser()
 		{
-			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\" ), true );
+			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\LJEditor" ), true );
 
 			m_ComponentInfo = gcnew ComponentInformation();
 			m_ComponentInfo->Name = "TestName";
-			//this->propertyGrid1->SelectedObject = m_ComponentInfo;
+			m_ComponentInfo->ComponentParameters->Add( gcnew ComponentParameterInformation() );
+			m_ComponentInfo->ComponentParameters[0]->Name = "TestName0";
+			m_ComponentInfo->ComponentParameters[0]->Discription = "TestDiscription0";
+			m_ComponentInfo->ComponentParameters[0]->VarType = 3;
+			m_ComponentInfo->ComponentParameters[0]->LoadType = 0;
+			m_ComponentInfo->ComponentParameters[0]->Value = " TestValue0" ;
+
+			m_ComponentInfo->ComponentParameters->Add( gcnew ComponentParameterInformation() );
+			m_ComponentInfo->ComponentParameters[1]->Name = "TestName1";
+			m_ComponentInfo->ComponentParameters[1]->Discription = "TestDiscription1";
+			m_ComponentInfo->ComponentParameters[1]->VarType = 1;
+			m_ComponentInfo->ComponentParameters[1]->LoadType = 0;
+			m_ComponentInfo->ComponentParameters[1]->Value = " TestValue1" ;
+
+			m_ComponentInfo->ComponentParameters->Add( gcnew ComponentParameterInformation() );
+			m_ComponentInfo->ComponentParameters[2]->Name = "TestName2";
+			m_ComponentInfo->ComponentParameters[2]->Discription = "TestDiscription2";
+			m_ComponentInfo->ComponentParameters[2]->VarType = 2;
+			m_ComponentInfo->ComponentParameters[2]->LoadType = 1;
+			m_ComponentInfo->ComponentParameters[2]->Value = " TestValue2" ;
 
 			CreateComponentTable( m_ComponentInfo );
 		}
 
+
+		void CreateTableEntries( ComponentInformation ^ componentInformation )
+		{
+			List<String^>^ VariableTypes = gcnew List<String^>();
+			VariableTypes->Add(" f32 ");
+			VariableTypes->Add(" f64 ");
+			VariableTypes->Add(" s32 ");
+			VariableTypes->Add(" str ");
+			VariableTypes->Add(" bool ");
+
+			List<String^>^ LoadTypes = gcnew List<String^>();
+			LoadTypes->Add(" static ");
+			LoadTypes->Add(" state ");
+
+
+			for( int counter = 0; counter < componentInformation->ComponentParameters->Count; counter++ )
+			{
+				String^ variableType = "";
+				String^ loadType = "";
+
+				switch( componentInformation->ComponentParameters[counter]->VarType )
+				{
+				case 0:
+					variableType = VariableTypes[0];
+					break;
+				case 1:
+					variableType = VariableTypes[1];
+					break;
+				case 2:
+					variableType = VariableTypes[2];
+					break;
+				case 3:
+					variableType = VariableTypes[3];
+					break;
+				case 4:
+					variableType = VariableTypes[4];
+					break;
+				}
+
+				switch( componentInformation->ComponentParameters[counter]->LoadType )
+				{
+				case 0:
+					loadType = LoadTypes[0];
+					break;
+				case 1:
+					loadType = LoadTypes[1];
+					break;
+				}
+				this->dataGridView1->Rows[counter]->Cells[0]->Value = componentInformation->ComponentParameters[counter]->Name;
+				this->dataGridView1->Rows[counter]->Cells[1]->Value = loadType;
+				this->dataGridView1->Rows[counter]->Cells[2]->Value = variableType;
+				this->dataGridView1->Rows[counter]->Cells[3]->Value = System::Convert::ToString( componentInformation->ComponentParameters[counter]->Value );
+				this->dataGridView1->Rows[counter]->Cells[4]->Value = componentInformation->ComponentParameters[counter]->Discription;
+
+				if( counter < componentInformation->ComponentParameters->Count  - 1)
+				{
+					this->dataGridView1->Rows->Insert(counter + 1,1);
+				}
+			}
+		}
 		//////////////////////////////////////////////////////////////////////////
 		/// takes a components information and constructs a table from the values
 		//////////////////////////////////////////////////////////////////////////
 		void CreateComponentTable ( ComponentInformation ^ componentInformation )
 		{
-			
+			List<String^>^ VariableTypes = gcnew List<String^>();
+			VariableTypes->Add(" f32 ");
+			VariableTypes->Add(" f64 ");
+			VariableTypes->Add(" s32 ");
+			VariableTypes->Add(" str ");
+			VariableTypes->Add(" bool ");
+
+			List<String^>^ LoadTypes = gcnew List<String^>();
+			LoadTypes->Add(" static ");
+			LoadTypes->Add(" state ");
+
 			String^ baseClassVar = System::Convert::ToString( componentInformation->BaseClass );
 			
 			//creating a new column and setting them so they aren't sortable
+			int index = 0;
 			this->dataGridView1->Columns->Add("Name", "Name");
-			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			this->dataGridView1->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			index++;
 
-			this->dataGridView1->Columns->Add("Type", "Type");
-			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			DataGridViewComboBoxColumn^ dataGridViewComboBoxColumn1 = gcnew DataGridViewComboBoxColumn();
+			this->dataGridView1->Columns->Add( dataGridViewComboBoxColumn1 );
+			dataGridViewComboBoxColumn1->SortMode = DataGridViewColumnSortMode::NotSortable;
+			dataGridViewComboBoxColumn1->Name = "LoadType";
+			dataGridViewComboBoxColumn1->DataSource = LoadTypes;
+			index++;
+
+			DataGridViewComboBoxColumn^ dataGridViewComboBoxColumn = gcnew DataGridViewComboBoxColumn();
+			this->dataGridView1->Columns->Add( dataGridViewComboBoxColumn );
+			dataGridViewComboBoxColumn->SortMode = DataGridViewColumnSortMode::NotSortable;
+			dataGridViewComboBoxColumn->Name = "Type";
+			dataGridViewComboBoxColumn->DataSource = VariableTypes;
+			index++;
 
 			this->dataGridView1->Columns->Add("Value", "Value");
-			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			this->dataGridView1->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			index++;
 
 			this->dataGridView1->Columns->Add("Discription", "Discription");
-			this->dataGridView1->Columns[ this->dataGridView1->Columns->GetColumnCount(DataGridViewElementStates::None) - 1]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			this->dataGridView1->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			index++;
+			this->dataGridView1->Rows->Add( componentInformation );
+
+			CreateTableEntries( componentInformation );
+
+			this->dataGridView1->RowsAdded += gcnew System::Windows::Forms::DataGridViewRowsAddedEventHandler(this, &ComponentTool::dataGridView1_RowsAdded);
 		}
-	};
+	private: 
+		System::Void dataGridView1_RowsAdded(System::Object^  sender, System::Windows::Forms::DataGridViewRowsAddedEventArgs^  e) 
+		{
+			int bp = 0;
+		}
+};
 }

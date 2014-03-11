@@ -22,14 +22,21 @@ private:
 	ToolStrip^ m_ToolStrip;
 	String^ m_DirectoryName;
 
-	System::Windows::Forms::ToolStripButton^ m_ToggleEmptyFolderButton;
-	System::Windows::Forms::ToolStripButton^ m_ToggleFileExtensions;
-	
+	bool m_RemoveParentPathNames;
+	bool m_RemoveEmptyPaths;
+	bool m_RemoveFileExtentions;
 
+	System::Windows::Forms::ToolStripButton^ m_ToggleEmptyFolderButton;
+	System::Windows::Forms::ToolStripButton^ m_ToggleFileExtensionsButton;
+	
 public:
 	CFileBrowser( TreeView^  treeView , String^ directoryName , bool createTaskBar)
 	{
 		//Init our tree view
+		m_RemoveParentPathNames = true;
+		m_RemoveEmptyPaths = false;
+		m_RemoveFileExtentions = true;
+
 		m_TreeView = treeView;
 		m_DirectoryName = directoryName;
 		
@@ -49,7 +56,7 @@ public:
 
 		m_TreeView->ImageList = m_ImageList;
 
-		TreeNode ^ node = CreateNodesFromDirectory( directoryName , true , false );//gcnew TreeNode("Testy");
+		TreeNode ^ node = CreateNodesFromDirectory( directoryName );//gcnew TreeNode("Testy");
 		node->Expand();
 		m_TreeView->Nodes->Add(node);
 
@@ -57,13 +64,15 @@ public:
 		{
 			CreateTaskBar();
 		}
-
 	}
 
-	TreeNode^ CreateNodesFromDirectory(String^ directoryPath , bool removeParentPathNames , bool removeEmptyPaths)
+	TreeNode^ CreateNodesFromDirectory(String^ directoryPath )
 	{
+		bool removeEmptyPaths = m_RemoveEmptyPaths;
+		bool removeFileExtentions = m_RemoveFileExtentions;
+
 		TreeNode ^ node;
-		if( removeParentPathNames )
+		if( m_RemoveParentPathNames )
 		{
 			node = gcnew TreeNode( Path::GetFileNameWithoutExtension( directoryPath ));
 		}
@@ -78,11 +87,9 @@ public:
 		{
 			String ^ directoryName = subDirectories[counter];
 
-			TreeNode^ subDirectory = CreateNodesFromDirectory( directoryName , removeParentPathNames , removeEmptyPaths);// gcnew TreeNode(subDirectories[counter]);
+			TreeNode^ subDirectory = CreateNodesFromDirectory( directoryName);// gcnew TreeNode(subDirectories[counter]);
 
 			subDirectory->ImageIndex = 0;
-
-			
 
 			array<String^>^ nextSubDirectories = Directory::GetDirectories( directoryName );
 
@@ -106,9 +113,16 @@ public:
 			for( int counter2 = 0; counter2 < filesInDirectory->Length; counter2++ )
 			{
 				String^ fileName = filesInDirectory[counter2];
-				if( removeParentPathNames )
+				if( m_RemoveParentPathNames )
 				{
-					fileName = Path::GetFileNameWithoutExtension(fileName);
+					if ( removeFileExtentions )
+					{
+						fileName = Path::GetFileNameWithoutExtension(fileName);
+					}
+					else
+					{
+						fileName = Path::GetFileName(fileName);
+					}
 				}
 				TreeNode^ fileInDirectory = gcnew TreeNode(fileName);
 				subDirectory->Nodes->Add( fileInDirectory );
@@ -141,10 +155,10 @@ public:
 		m_ToggleEmptyFolderButton->ToolTipText = "ToggleEmptyFolders";
 		m_ToolStrip->Items->Add( m_ToggleEmptyFolderButton );
 
-		m_ToggleFileExtensions = gcnew ToolStripButton(FileImage);
-		m_ToggleFileExtensions->Click += gcnew EventHandler(this, &CFileBrowser::ToggleFileExtensionsCheckedChanged);
-		m_ToggleFileExtensions->ToolTipText = "ToggleEmptyFolders";
-		m_ToolStrip->Items->Add( m_ToggleFileExtensions );
+		m_ToggleFileExtensionsButton = gcnew ToolStripButton(FileImage);
+		m_ToggleFileExtensionsButton->Click += gcnew EventHandler(this, &CFileBrowser::ToggleFileExtensionsCheckedChanged);
+		m_ToggleFileExtensionsButton->ToolTipText = "ToggleEmptyExtensions";
+		m_ToolStrip->Items->Add( m_ToggleFileExtensionsButton );
 		//"ToggleEmptyFolders"
 		//newToolStrip->
 	}
@@ -165,72 +179,24 @@ private:
 	void ToggleEmptyFoldersButtonCheckedChanged(Object^ sender, EventArgs^ e)
 	{
 		m_ToggleEmptyFolderButton->Checked = !m_ToggleEmptyFolderButton->Checked;
+		m_RemoveEmptyPaths = m_ToggleEmptyFolderButton->Checked;
 
-		if (m_ToggleEmptyFolderButton->Checked)
-		{ 
-			m_TreeView->Nodes->Clear();
-			TreeNode ^ node;
-			if( m_ToggleEmptyFolderButton->Checked )
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , true , true );
-			}
-			else
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , false , true );
-			}
-			node->Expand();
-			m_TreeView->Nodes->Add(node);
-		}
-		else
-		{ 
-			m_TreeView->Nodes->Clear();
-			TreeNode ^ node;
-			if( m_ToggleEmptyFolderButton->Checked )
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , true , false );
-			}
-			else
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , false , false );
-			}
-			node->Expand();
-			m_TreeView->Nodes->Add(node);
-		}
+		m_TreeView->Nodes->Clear();
+		TreeNode ^ node;
+		node = CreateNodesFromDirectory( m_DirectoryName );
+		node->Expand();
+		m_TreeView->Nodes->Add(node);
 	}
 
 	void ToggleFileExtensionsCheckedChanged(Object^ sender, EventArgs^ e)
 	{
-		m_ToggleFileExtensions->Checked = !m_ToggleFileExtensions->Checked;
+		m_ToggleFileExtensionsButton->Checked = !m_ToggleFileExtensionsButton->Checked;
+		m_RemoveFileExtentions = !m_ToggleFileExtensionsButton->Checked;
 
-		if (m_ToggleFileExtensions->Checked)
-		{ 
-			m_TreeView->Nodes->Clear();
-			TreeNode ^ node;
-			if( m_ToggleEmptyFolderButton->Checked )
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , true , true );
-			}
-			else
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , true , false );
-			}
-			node->Expand();
-			m_TreeView->Nodes->Add(node);
-		}
-		else
-		{ 
-			m_TreeView->Nodes->Clear();
-			TreeNode ^ node;
-			if( m_ToggleEmptyFolderButton->Checked )
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , false , true );
-			}
-			else
-			{
-				node = CreateNodesFromDirectory( m_DirectoryName , false , false );
-			}
-			node->Expand();
-			m_TreeView->Nodes->Add(node);
-		}
+		m_TreeView->Nodes->Clear();
+		TreeNode ^ node;
+		node = CreateNodesFromDirectory( m_DirectoryName );
+		node->Expand();
+		m_TreeView->Nodes->Add(node);
 	}
 };
