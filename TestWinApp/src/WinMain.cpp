@@ -22,6 +22,37 @@ class someBoostTest
 BOOST_PTR_DEF(someBoostTest);
 
 
+void initGL()
+{
+	glShadeModel(GL_SMOOTH);							// Enable smooth shading
+	glClearColor(0.39f, 0.584f, 0.9294f, 1.0f);				// Black background
+	glClearDepth(1.0f);									// Depth buffer setup
+	glEnable(GL_DEPTH_TEST);							// Enables depth testing
+	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations
+}
+
+void resizeGL(GLFWwindow* window)
+{
+	float ratio;
+	int width, height;
+
+	//Get the width and size of the framebuffer
+	glfwGetFramebufferSize(window, &width, &height);
+	//Calculate the aspect ratio
+	ratio = width / (float) height;
+
+	glViewport(0,0,width,height);						// Reset The Current Viewport
+
+	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glLoadIdentity();									// Reset The Projection Matrix
+	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
+	glLoadIdentity();									// Reset The Modelview Matrix
+}
+
+
 /*!
  *
  */
@@ -44,9 +75,12 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 	EngineTestClass::RenderTriangle();
 	*/
 
+	
 
-	//Initializing GLFW.  Must be done before any glfw calls can be made
-	glfwInit();
+
+	//-- setup engine	
+	__core.initialize();
+
 
 	//Reference to the window we will make
 	GLFWwindow* window;
@@ -66,8 +100,11 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 	//Make the new window the focus
 	glfwMakeContextCurrent(window);
 
-	//-- setup engine	
-	__core.initialize( window );
+	//-- initialize GL states
+	initGL();
+
+	resizeGL(window);
+
 	//-- game time
 	GameTime* gameTime = new GameTime();
 	l_f32 lastTime = glfwGetTime();
@@ -77,8 +114,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 	//While the window is valid
 	while (!glfwWindowShouldClose(window))
 	{
-		
-
 		//-- calculate time
 		l_f32 t = glfwGetTime();
 		l_f32 delta = ( t - lastTime );
@@ -110,13 +145,20 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 		__core.lateUpdate( gameTime );
 
+		//resizeGL(window);
+		int width, height;
+
+		//Get the width and size of the framebuffer
+		glfwGetFramebufferSize(window, &width, &height);
+
+		__core.setWindowSize(width, height);
+
 		//-- draw
 		__core.preDraw();
 
-		__core.draw( gameTime );
+		__core.drawNative( gameTime );
 
-
-
+		glfwSwapBuffers(window);
 		
 		//Poll for any events
 		glfwPollEvents();

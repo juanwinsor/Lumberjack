@@ -3,7 +3,12 @@
 #include <windows.h>
 #include <gl/Gl.h>
 #include <gl/Glu.h>
-#include <LJEngine/LJEngineTestClass.h>
+//#include <LJEngine/LJEngineTestClass.h>
+#include <LJEngine/Core.h>
+#include <LJengine/Time/GameTime.h>
+#include <GLFW/glfw3.h>
+
+using namespace lj;
 
 using namespace System::Windows::Forms;
 
@@ -15,6 +20,10 @@ namespace OpenGLForm
 
 		COpenGL(System::Windows::Forms::Form ^ parentForm, System::Windows::Forms::PictureBox^ pictureBox)
 		{
+
+			m_Width = pictureBox->Width;
+			m_Height = pictureBox->Height;
+
 			CreateParams^ cp = gcnew CreateParams;
 
 			// Set the position on the form
@@ -48,9 +57,8 @@ namespace OpenGLForm
 
 		System::Void Render(System::Void)
 		{
-			EngineTestClass::Clear();
-
-			//GLFWTest::clearToCornflowerBlue();
+			m_Core->preDraw();
+			m_Core->draw( m_GameTime );
 		}
 
 		System::Void SwapOpenGLBuffers(System::Void)
@@ -78,6 +86,12 @@ namespace OpenGLForm
 		HGLRC m_hglrc;
 		GLfloat	rtri;				// Angle for the triangle
 		GLfloat	rquad;				// Angle for the quad
+
+		int m_Width;
+		int m_Height;
+
+		Core* m_Core;
+		GameTime* m_GameTime;
 
 	protected:
 		~COpenGL(System::Void)
@@ -151,8 +165,15 @@ namespace OpenGLForm
 			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations
 			//GLFWTest::init();
 
-			EngineTestClass::InitEngine();
 
+			
+			//glfwInit();
+			m_Core->initialize();
+			m_Core = new Core();
+			m_GameTime = new GameTime;
+			//EngineTestClass::InitEngine();
+
+			
 
 			return TRUE;										// Initialisation went ok
 		}
