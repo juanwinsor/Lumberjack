@@ -61,7 +61,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\build\LJEngine\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LJEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LJEngine.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Message>Copy all dlls &amp; libs from the engine dir into the local deps dir</Message>

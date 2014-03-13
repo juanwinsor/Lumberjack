@@ -49,9 +49,6 @@
     <ClInclude Include="Forms\LumberjackEditor\LumberjackEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\CGLWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Forms\Export\Export.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -27,10 +27,6 @@ namespace lj
 		void preDraw();
 		void draw(GameTime* gameTime);
 
-		void drawNative(GameTime* gameTime);
-
-		void setWindowSize(int width, int height);
-
 	private:
 		int m_Width;
 		int m_Height;

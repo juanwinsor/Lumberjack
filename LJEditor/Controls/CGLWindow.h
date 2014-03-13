@@ -19,6 +19,7 @@ namespace OpenGLForm
 	public:
 
 		COpenGL(System::Windows::Forms::Form ^ parentForm, System::Windows::Forms::PictureBox^ pictureBox)
+		: m_LastTime (0)
 		{
 
 			m_Width = pictureBox->Width;
@@ -45,9 +46,9 @@ namespace OpenGLForm
 
 			if(m_hDC)
 			{
-				MySetPixelFormat(m_hDC);
-				ReSizeGLScene(pictureBox->Width, pictureBox->Height);
+				MySetPixelFormat(m_hDC);				
 				InitGL();
+				ReSizeGLScene(pictureBox->Width, pictureBox->Height);
 			}
 
 			rtri = 0.0f;
@@ -55,8 +56,15 @@ namespace OpenGLForm
 
 		}
 
+		
+
 		System::Void Render(System::Void)
 		{
+			float t = glfwGetTime();
+			m_GameTime->deltaTime = t - m_LastTime;
+			m_GameTime->totalTime += m_GameTime->deltaTime;
+			m_LastTime = t;
+
 			m_Core->preDraw();
 			m_Core->draw( m_GameTime );
 		}
@@ -92,6 +100,7 @@ namespace OpenGLForm
 
 		Core* m_Core;
 		GameTime* m_GameTime;
+		float m_LastTime;
 
 	protected:
 		~COpenGL(System::Void)
@@ -162,18 +171,13 @@ namespace OpenGLForm
 			glClearDepth(1.0f);									// Depth buffer setup
 			glEnable(GL_DEPTH_TEST);							// Enables depth testing
 			glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
-			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations
-			//GLFWTest::init();
-
-
+			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations			
 			
-			//glfwInit();
-			m_Core->initialize();
 			m_Core = new Core();
+			m_Core->initialize();
 			m_GameTime = new GameTime;
-			//EngineTestClass::InitEngine();
-
 			
+			m_LastTime = glfwGetTime();
 
 			return TRUE;										// Initialisation went ok
 		}
@@ -192,6 +196,8 @@ namespace OpenGLForm
 
 			// Calculate The Aspect Ratio Of The Window
 			gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
+			//glOrtho(-(GLfloat)width/(GLfloat)height, (GLfloat)width/(GLfloat)height, -1.f, 1.f, 1.f, -1.f);
+			
 
 			glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 			glLoadIdentity();									// Reset The Modelview Matrix

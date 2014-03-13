@@ -1,11 +1,11 @@
 //Needed
 #include <windows.h>
-
 #include <stdlib.h>
 
 //#include <LJEngine\LJEngineTestClass.h>
 //#include <Box2D/Box2D.h>
 
+#include <gl/GLU.h>
 #include <GLFW/glfw3.h>
 #include <LJEngine/Core.h>
 #include <LJEngine/Time/GameTime.h>
@@ -46,7 +46,9 @@ void resizeGL(GLFWwindow* window)
 
 	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
 	glLoadIdentity();									// Reset The Projection Matrix
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+	//glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+	//glFrustum(-ratio, ratio, -1.0, 1.0, 0.1f, 100);
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
 
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
@@ -145,18 +147,10 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 		__core.lateUpdate( gameTime );
 
-		//resizeGL(window);
-		int width, height;
-
-		//Get the width and size of the framebuffer
-		glfwGetFramebufferSize(window, &width, &height);
-
-		__core.setWindowSize(width, height);
-
 		//-- draw
 		__core.preDraw();
 
-		__core.drawNative( gameTime );
+		__core.draw( gameTime );
 
 		glfwSwapBuffers(window);
 		
