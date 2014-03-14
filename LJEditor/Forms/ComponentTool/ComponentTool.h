@@ -52,7 +52,13 @@ namespace LJEditor {
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container ^components;
-	private: System::Windows::Forms::DataGridView^  dataGridView1;
+	private: System::Windows::Forms::DataGridView^  dgvComponentParameters;
+	private: System::Windows::Forms::ToolStrip^  toolStrip1;
+	private: System::Windows::Forms::ToolStripButton^  tsBtnAdd;
+	private: System::Windows::Forms::ToolStripButton^  tsBtnRemove;
+
+
+
 			 ComponentInformation^ m_ComponentInfo;
 		
 #pragma region Windows Form Designer generated code
@@ -64,12 +70,16 @@ namespace LJEditor {
 		{
 			this->scMain = (gcnew System::Windows::Forms::SplitContainer());
 			this->tvFileBrowser = (gcnew System::Windows::Forms::TreeView());
-			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->toolStrip1 = (gcnew System::Windows::Forms::ToolStrip());
+			this->tsBtnAdd = (gcnew System::Windows::Forms::ToolStripButton());
+			this->tsBtnRemove = (gcnew System::Windows::Forms::ToolStripButton());
+			this->dgvComponentParameters = (gcnew System::Windows::Forms::DataGridView());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->BeginInit();
 			this->scMain->Panel1->SuspendLayout();
 			this->scMain->Panel2->SuspendLayout();
 			this->scMain->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dataGridView1))->BeginInit();
+			this->toolStrip1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dgvComponentParameters))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// scMain
@@ -84,7 +94,8 @@ namespace LJEditor {
 			// 
 			// scMain.Panel2
 			// 
-			this->scMain->Panel2->Controls->Add(this->dataGridView1);
+			this->scMain->Panel2->Controls->Add(this->toolStrip1);
+			this->scMain->Panel2->Controls->Add(this->dgvComponentParameters);
 			this->scMain->Size = System::Drawing::Size(915, 539);
 			this->scMain->SplitterDistance = 170;
 			this->scMain->TabIndex = 0;
@@ -97,15 +108,42 @@ namespace LJEditor {
 			this->tvFileBrowser->Size = System::Drawing::Size(170, 539);
 			this->tvFileBrowser->TabIndex = 0;
 			// 
-			// dataGridView1
+			// toolStrip1
 			// 
-			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->dataGridView1->Location = System::Drawing::Point(0, 0);
-			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(741, 539);
-			this->dataGridView1->TabIndex = 0;
-
+			this->toolStrip1->Dock = System::Windows::Forms::DockStyle::Bottom;
+			this->toolStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->tsBtnAdd, this->tsBtnRemove});
+			this->toolStrip1->Location = System::Drawing::Point(0, 514);
+			this->toolStrip1->Name = L"toolStrip1";
+			this->toolStrip1->Size = System::Drawing::Size(741, 25);
+			this->toolStrip1->TabIndex = 1;
+			this->toolStrip1->Text = L"toolStrip1";
+			// 
+			// tsBtnAdd
+			// 
+			this->tsBtnAdd->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Image;
+			this->tsBtnAdd->Name = L"tsBtnAdd";
+			this->tsBtnAdd->Size = System::Drawing::Size(23, 22);
+			this->tsBtnAdd->Text = L"tsBtnAdd";
+			this->tsBtnAdd->Click += gcnew System::EventHandler(this, &ComponentTool::tsBtnAdd_Click);
+			// 
+			// tsBtnRemove
+			// 
+			this->tsBtnRemove->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Image;
+			this->tsBtnRemove->Name = L"tsBtnRemove";
+			this->tsBtnRemove->Size = System::Drawing::Size(23, 22);
+			this->tsBtnRemove->Text = L"tsBtnRemove";
+			this->tsBtnRemove->ToolTipText = L"Remove Element";
+			this->tsBtnRemove->Click += gcnew System::EventHandler(this, &ComponentTool::tsBtnRemove_Click);
+			// 
+			// dgvComponentParameters
+			// 
+			this->dgvComponentParameters->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dgvComponentParameters->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->dgvComponentParameters->Location = System::Drawing::Point(0, 0);
+			this->dgvComponentParameters->Name = L"dgvComponentParameters";
+			this->dgvComponentParameters->Size = System::Drawing::Size(741, 539);
+			this->dgvComponentParameters->TabIndex = 0;
+			this->dgvComponentParameters->Resize += gcnew System::EventHandler(this, &ComponentTool::dgvComponentParameters_Resize);
 			// 
 			// ComponentTool
 			// 
@@ -118,9 +156,12 @@ namespace LJEditor {
 			this->Load += gcnew System::EventHandler(this, &ComponentTool::ComponentTool_Load);
 			this->scMain->Panel1->ResumeLayout(false);
 			this->scMain->Panel2->ResumeLayout(false);
+			this->scMain->Panel2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->EndInit();
 			this->scMain->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dataGridView1))->EndInit();
+			this->toolStrip1->ResumeLayout(false);
+			this->toolStrip1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dgvComponentParameters))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -137,6 +178,11 @@ namespace LJEditor {
 		{
 			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\LJEditor" ), true );
 
+			SetUpComponentBrowser();
+		}
+
+		void SetUpComponentBrowser()
+		{
 			m_ComponentInfo = gcnew ComponentInformation();
 			m_ComponentInfo->Name = "TestName";
 			m_ComponentInfo->ComponentParameters->Add( gcnew ComponentParameterInformation() );
@@ -161,8 +207,14 @@ namespace LJEditor {
 			m_ComponentInfo->ComponentParameters[2]->Value = " TestValue2" ;
 
 			CreateComponentTable( m_ComponentInfo );
-		}
 
+			String^ textureLocation = Application::StartupPath;
+
+			textureLocation = String::Concat( textureLocation + "\\..\\..\\..\\LJEditor\\Content\\Textures\\ToolStripTextures");
+			
+			this->tsBtnAdd->Image = Image::FromFile( String::Concat(textureLocation + "\\Add.png") );
+			this->tsBtnRemove->Image = Image::FromFile( String::Concat(textureLocation + "\\Remove.png") );
+		}
 
 		void CreateTableEntries( ComponentInformation ^ componentInformation )
 		{
@@ -177,6 +229,10 @@ namespace LJEditor {
 			LoadTypes->Add(" static ");
 			LoadTypes->Add(" state ");
 
+			while( this->dgvComponentParameters->Rows->Count > 1 )
+			{
+				this->dgvComponentParameters->Rows->Remove(this->dgvComponentParameters->Rows[1]);
+			}
 
 			for( int counter = 0; counter < componentInformation->ComponentParameters->Count; counter++ )
 			{
@@ -211,15 +267,15 @@ namespace LJEditor {
 					loadType = LoadTypes[1];
 					break;
 				}
-				this->dataGridView1->Rows[counter]->Cells[0]->Value = componentInformation->ComponentParameters[counter]->Name;
-				this->dataGridView1->Rows[counter]->Cells[1]->Value = loadType;
-				this->dataGridView1->Rows[counter]->Cells[2]->Value = variableType;
-				this->dataGridView1->Rows[counter]->Cells[3]->Value = System::Convert::ToString( componentInformation->ComponentParameters[counter]->Value );
-				this->dataGridView1->Rows[counter]->Cells[4]->Value = componentInformation->ComponentParameters[counter]->Discription;
-
+				this->dgvComponentParameters->Rows[counter]->Cells[0]->Value = componentInformation->ComponentParameters[counter]->Name;
+				this->dgvComponentParameters->Rows[counter]->Cells[1]->Value = loadType;
+				this->dgvComponentParameters->Rows[counter]->Cells[2]->Value = variableType;
+				this->dgvComponentParameters->Rows[counter]->Cells[3]->Value = System::Convert::ToString( componentInformation->ComponentParameters[counter]->Value );
+				this->dgvComponentParameters->Rows[counter]->Cells[4]->Value = componentInformation->ComponentParameters[counter]->Discription;
+				this->dgvComponentParameters->Rows[counter]->Resizable = DataGridViewTriState::False;
 				if( counter < componentInformation->ComponentParameters->Count  - 1)
 				{
-					this->dataGridView1->Rows->Insert(counter + 1,1);
+					this->dgvComponentParameters->Rows->Insert(counter + 1,1);
 				}
 			}
 		}
@@ -234,50 +290,87 @@ namespace LJEditor {
 			VariableTypes->Add(" s32 ");
 			VariableTypes->Add(" str ");
 			VariableTypes->Add(" bool ");
-
+			
 			List<String^>^ LoadTypes = gcnew List<String^>();
 			LoadTypes->Add(" static ");
 			LoadTypes->Add(" state ");
 
 			String^ baseClassVar = System::Convert::ToString( componentInformation->BaseClass );
 			
+			this->dgvComponentParameters->AllowUserToAddRows = false;
+
 			//creating a new column and setting them so they aren't sortable
 			int index = 0;
-			this->dataGridView1->Columns->Add("Name", "Name");
-			this->dataGridView1->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			this->dgvComponentParameters->Columns->Add("Name", "Name");
+			this->dgvComponentParameters->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
 			index++;
 
 			DataGridViewComboBoxColumn^ dataGridViewComboBoxColumn1 = gcnew DataGridViewComboBoxColumn();
-			this->dataGridView1->Columns->Add( dataGridViewComboBoxColumn1 );
+			this->dgvComponentParameters->Columns->Add( dataGridViewComboBoxColumn1 );
 			dataGridViewComboBoxColumn1->SortMode = DataGridViewColumnSortMode::NotSortable;
 			dataGridViewComboBoxColumn1->Name = "LoadType";
 			dataGridViewComboBoxColumn1->DataSource = LoadTypes;
 			index++;
 
 			DataGridViewComboBoxColumn^ dataGridViewComboBoxColumn = gcnew DataGridViewComboBoxColumn();
-			this->dataGridView1->Columns->Add( dataGridViewComboBoxColumn );
+			this->dgvComponentParameters->Columns->Add( dataGridViewComboBoxColumn );
 			dataGridViewComboBoxColumn->SortMode = DataGridViewColumnSortMode::NotSortable;
 			dataGridViewComboBoxColumn->Name = "Type";
 			dataGridViewComboBoxColumn->DataSource = VariableTypes;
 			index++;
 
-			this->dataGridView1->Columns->Add("Value", "Value");
-			this->dataGridView1->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			this->dgvComponentParameters->Columns->Add("Value", "Value");
+			this->dgvComponentParameters->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
 			index++;
 
-			this->dataGridView1->Columns->Add("Discription", "Discription");
-			this->dataGridView1->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
+			this->dgvComponentParameters->Columns->Add("Discription", "Discription");
+			this->dgvComponentParameters->Columns[ index ]->SortMode = DataGridViewColumnSortMode::NotSortable;
 			index++;
-			this->dataGridView1->Rows->Add( componentInformation );
+			this->dgvComponentParameters->Rows->Add( componentInformation );
 
 			CreateTableEntries( componentInformation );
 
-			this->dataGridView1->RowsAdded += gcnew System::Windows::Forms::DataGridViewRowsAddedEventHandler(this, &ComponentTool::dataGridView1_RowsAdded);
+			//this->dgvComponentParameters->RowsAdded += gcnew System::Windows::Forms::DataGridViewRowsAddedEventHandler(this, &ComponentTool::dgvComponentParameters_RowsAdded);
 		}
 	private: 
-		System::Void dataGridView1_RowsAdded(System::Object^  sender, System::Windows::Forms::DataGridViewRowsAddedEventArgs^  e) 
+		//System::Void dgvComponentParameters_RowsAdded(System::Object^  sender, System::Windows::Forms::DataGridViewRowsAddedEventArgs^  e) 
+		//{
+		//	int bp = 0;
+		//}
+private: 
+	System::Void tsBtnAdd_Click(System::Object^  sender, System::EventArgs^  e) 
+	{
+		ComponentParameterInformation^ componentParamInfo = gcnew ComponentParameterInformation();
+		m_ComponentInfo->ComponentParameters->Add( componentParamInfo );
+		componentParamInfo->Name = "TestName" + m_ComponentInfo->ComponentParameters->Count;
+		componentParamInfo->Discription = "TestDiscription" + m_ComponentInfo->ComponentParameters->Count;
+		componentParamInfo->VarType = 1;
+		componentParamInfo->LoadType = 1;
+		componentParamInfo->Value = " TestValue" + m_ComponentInfo->ComponentParameters->Count ;
+
+		CreateTableEntries(m_ComponentInfo);
+	}
+private: 
+	System::Void tsBtnRemove_Click(System::Object^  sender, System::EventArgs^  e) 
+	{
+		DataGridViewSelectedRowCollection ^ rows = this->dgvComponentParameters->SelectedRows;
+		if( rows->Count > 0 )
 		{
-			int bp = 0;
+			DataGridViewRow^ row = rows[0];
+
+			m_ComponentInfo->ComponentParameters->RemoveAt( row->Index );
+
+			CreateTableEntries(m_ComponentInfo);
 		}
+	}
+private: 
+	System::Void dgvComponentParameters_Resize(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for( int counter = 0; counter < this->dgvComponentParameters->Columns->Count; counter++)
+		{
+			this->dgvComponentParameters->Columns[counter]->Resizable = DataGridViewTriState::False; 
+			this->dgvComponentParameters->Columns[counter]->Width = this->dgvComponentParameters->Width / this->dgvComponentParameters->Columns->Count;
+		}
+	}
 };
 }
