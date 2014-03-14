@@ -118,12 +118,23 @@ xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Comman
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.h" />
+    <ClInclude Include="src\EntitySystem\Component.h" />
     <ClInclude Include="src\EntitySystem\Entity.h" />
+    <ClInclude Include="src\EntitySystem\EntityManager.h" />
+    <ClInclude Include="src\Graphics\Camera2D.h" />
+    <ClInclude Include="src\Graphics\Renderer2D.h" />
+    <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\LJEngineTestClass.h" />
     <ClInclude Include="src\Time\GameTime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core.cpp" />
+    <ClCompile Include="src\EntitySystem\Component.cpp" />
+    <ClCompile Include="src\EntitySystem\Entity.cpp" />
+    <ClCompile Include="src\EntitySystem\EntityManager.cpp" />
+    <ClCompile Include="src\Graphics\Camera2D.cpp" />
+    <ClCompile Include="src\Graphics\Renderer2D.cpp" />
+    <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\LJEngineTestClass.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

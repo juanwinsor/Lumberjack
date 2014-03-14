@@ -3,7 +3,12 @@
 #include <windows.h>
 #include <gl/Gl.h>
 #include <gl/Glu.h>
-#include <LJEngine/LJEngineTestClass.h>
+//#include <LJEngine/LJEngineTestClass.h>
+#include <LJEngine/Core.h>
+#include <LJengine/Time/GameTime.h>
+#include <GLFW/glfw3.h>
+
+using namespace lj;
 
 using namespace System::Windows::Forms;
 
@@ -14,7 +19,12 @@ namespace OpenGLForm
 	public:
 
 		COpenGL(System::Windows::Forms::Form ^ parentForm, System::Windows::Forms::PictureBox^ pictureBox)
+		: m_LastTime (0)
 		{
+
+			m_Width = pictureBox->Width;
+			m_Height = pictureBox->Height;
+
 			CreateParams^ cp = gcnew CreateParams;
 
 			// Set the position on the form
@@ -36,9 +46,9 @@ namespace OpenGLForm
 
 			if(m_hDC)
 			{
-				MySetPixelFormat(m_hDC);
-				ReSizeGLScene(pictureBox->Width, pictureBox->Height);
+				MySetPixelFormat(m_hDC);				
 				InitGL();
+				ReSizeGLScene(pictureBox->Width, pictureBox->Height);
 			}
 
 			rtri = 0.0f;
@@ -46,11 +56,17 @@ namespace OpenGLForm
 
 		}
 
+		
+
 		System::Void Render(System::Void)
 		{
-			EngineTestClass::Clear();
+			float t = glfwGetTime();
+			m_GameTime->deltaTime = t - m_LastTime;
+			m_GameTime->totalTime += m_GameTime->deltaTime;
+			m_LastTime = t;
 
-			//GLFWTest::clearToCornflowerBlue();
+			m_Core->preDraw();
+			m_Core->draw( m_GameTime );
 		}
 
 		System::Void SwapOpenGLBuffers(System::Void)
@@ -78,6 +94,13 @@ namespace OpenGLForm
 		HGLRC m_hglrc;
 		GLfloat	rtri;				// Angle for the triangle
 		GLfloat	rquad;				// Angle for the quad
+
+		int m_Width;
+		int m_Height;
+
+		Core* m_Core;
+		GameTime* m_GameTime;
+		float m_LastTime;
 
 	protected:
 		~COpenGL(System::Void)
@@ -148,11 +171,13 @@ namespace OpenGLForm
 			glClearDepth(1.0f);									// Depth buffer setup
 			glEnable(GL_DEPTH_TEST);							// Enables depth testing
 			glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
-			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations
-			//GLFWTest::init();
-
-			EngineTestClass::InitEngine();
-
+			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calculations			
+			
+			m_Core = new Core();
+			m_Core->initialize();
+			m_GameTime = new GameTime;
+			
+			m_LastTime = glfwGetTime();
 
 			return TRUE;										// Initialisation went ok
 		}
@@ -171,6 +196,8 @@ namespace OpenGLForm
 
 			// Calculate The Aspect Ratio Of The Window
 			gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
+			//glOrtho(-(GLfloat)width/(GLfloat)height, (GLfloat)width/(GLfloat)height, -1.f, 1.f, 1.f, -1.f);
+			
 
 			glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 			glLoadIdentity();									// Reset The Modelview Matrix

@@ -345,6 +345,8 @@ namespace LJEditor {
 #pragma endregion
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e)
 			 {
+				 
+
 				 UNREFERENCED_PARAMETER(sender);
 				 UNREFERENCED_PARAMETER(e);
 
