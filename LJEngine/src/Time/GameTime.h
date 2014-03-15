@@ -1,23 +1,16 @@
 #ifndef LJGAMETIME_H_
 #define LJGAMETIME_H_
 
-namespace lj
+class GameTime
 {
-	struct GameTime
-	{
-		GameTime()
-		{
-			deltaTime = 0;
-			totalTime = 0;
-			fixedStep = 1.0f / 60.0f;
-			alpha = 0;
-		}
+public:
+	GameTime();
 
-		float deltaTime;
-		float totalTime;
-		float fixedStep;
-		float alpha;
-	};
-}
+	float deltaTime;
+	float totalTime;
+	float fixedStep;
+	float alpha;
+};
+
 
 #endif
