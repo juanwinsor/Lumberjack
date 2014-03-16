@@ -43,7 +43,7 @@ void EntityManager::deleteEntity(string name)
 	//look for the entity to delete
 	for(int i = 0; i < m_Entities.size(); i++)
 	{
-		if(m_Entities[i]->Name() == name)
+		if(m_Entities[i]->getName() == name)
 		{
 			indexFound = i;
 			break;
@@ -82,7 +82,7 @@ Entity* EntityManager::getEntity(string name)
 {
 	for(int i = 0; i < m_Entities.size(); i++)
 	{
-		if(m_Entities[i]->Name() == name)
+		if(m_Entities[i]->getName() == name)
 		{
 			return m_Entities[i];
 		}

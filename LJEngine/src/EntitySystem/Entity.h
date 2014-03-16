@@ -20,7 +20,7 @@ public:
 	Entity();
 	~Entity();
 
-	string Name();
+	string getName();
 	void setName(string name);
 
 	
@@ -57,10 +57,10 @@ public:
 	virtual void update(GameTime* gameTime);
 	virtual void draw(GameTime* gameTime);
 
-	void SetManager(EntityManager* entityManager);
-	EntityManager* GetManager();
-	void SetParent(Entity* parent);
-	Entity* GetParent();
+	void setManager(EntityManager* entityManager);
+	EntityManager* getManager();
+	void setParent(Entity* parent);
+	Entity* getParent();
 
 	EntityTransform* getTransform();
 

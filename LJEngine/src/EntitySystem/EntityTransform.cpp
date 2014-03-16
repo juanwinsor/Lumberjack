@@ -38,10 +38,10 @@ mat4 EntityTransform::getWorldMatrix()
 
 	if( m_Owner != NULL )
 	{
-		if( m_Owner->GetParent() != NULL )
+		if( m_Owner->getParent() != NULL )
 		{
-			mat4 combinedW = m_Owner->GetParent()->getTransform()->getWorldMatrix();
-			return combinedW * m_WorldMatrix;
+			mat4 parentW = m_Owner->getParent()->getTransform()->getWorldMatrix();
+			return parentW * m_WorldMatrix;
 		}
 		else
 		{
@@ -53,7 +53,7 @@ mat4 EntityTransform::getWorldMatrix()
 
 void EntityTransform::updateTranslationMatrix()
 {
-	//-- set position values direction
+	//-- set position values directly
 	m_TranslationMatrix[3][0] = m_LocalPosition.x;
 	m_TranslationMatrix[3][1] = m_LocalPosition.y;
 	m_TranslationMatrix[3][2] = m_LocalPosition.z;
@@ -100,9 +100,9 @@ vec3 EntityTransform::getWorldRotationDegrees()
 	//-- get owners parent transform if it exists
 	if( m_Owner != NULL )
 	{
-		if( m_Owner->GetParent() != NULL )
+		if( m_Owner->getParent() != NULL )
 		{
-			return m_LocalRotation + m_Owner->GetParent()->getTransform()->getWorldRotationDegrees();
+			return m_LocalRotation + m_Owner->getParent()->getTransform()->getWorldRotationDegrees();
 		}
 	}
 

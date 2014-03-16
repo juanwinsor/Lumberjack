@@ -39,7 +39,7 @@ Entity::~Entity()
 }
 
 
-string Entity::Name()
+string Entity::getName()
 {
 	return m_Name;
 }
@@ -105,29 +105,29 @@ Entity* Entity::createChild()
 	//create the entity with the entity manager
 	Entity* entity = m_Manager->createEntity();
 	//pass a reference to the entitymanager
-	entity->SetManager(m_Manager);
+	entity->setManager(m_Manager);
 	//set the parent of this child to this instance
-	entity->SetParent(this);
+	entity->setParent(this);
 
 	return entity;
 }
 
-void Entity::SetManager(EntityManager* entityManager)
+void Entity::setManager(EntityManager* entityManager)
 {
 	m_Manager = entityManager;
 }
 
-void Entity::SetParent(Entity* parent)
+void Entity::setParent(Entity* parent)
 {
 	m_Parent = parent;
 }
 
-Entity* Entity::GetParent()
+Entity* Entity::getParent()
 {
 	return m_Parent;
 }
 
-EntityManager* Entity::GetManager()
+EntityManager* Entity::getManager()
 {
 	return m_Manager;
 }
