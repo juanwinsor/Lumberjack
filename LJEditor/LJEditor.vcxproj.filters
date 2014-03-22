@@ -67,6 +67,9 @@
     <ClInclude Include="Source\ComponentParameterInformation\ComponentParameterInformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\EnumUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">

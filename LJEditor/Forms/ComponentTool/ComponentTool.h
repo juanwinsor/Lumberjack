@@ -2,6 +2,7 @@
 
 #include "../../Controls/CFileBrowser.h"
 #include "../../Source/ComponentInformation/ComponentInformation.h"
+#include "../../Source/Util/EnumUtil.h"
 
 namespace LJEditor {
 
@@ -143,6 +144,8 @@ namespace LJEditor {
 			this->dgvComponentParameters->Name = L"dgvComponentParameters";
 			this->dgvComponentParameters->Size = System::Drawing::Size(741, 539);
 			this->dgvComponentParameters->TabIndex = 0;
+			this->dgvComponentParameters->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &ComponentTool::dgvComponentParameters_CellClick);
+			this->dgvComponentParameters->CellValidating += gcnew System::Windows::Forms::DataGridViewCellValidatingEventHandler(this, &ComponentTool::dgvComponentParameters_CellValidating);
 			this->dgvComponentParameters->Resize += gcnew System::EventHandler(this, &ComponentTool::dgvComponentParameters_Resize);
 			// 
 			// ComponentTool
@@ -169,16 +172,20 @@ namespace LJEditor {
 	private: 
 		System::Void ComponentTool_Load(System::Object^  sender, System::EventArgs^  e) 
 		{
-			SetUpFileBrowser();
+			Initialize();
 		}
 
 	public:
 
+		void Initialize()
+		{
+			SetUpComponentBrowser();
+			SetUpFileBrowser();
+		}
+
 		void SetUpFileBrowser()
 		{
 			CFileBrowser^ fileBrowser = gcnew CFileBrowser(tvFileBrowser, String::Concat( Application::StartupPath + "..\\..\\..\\..\\LJEditor" ), true );
-
-			SetUpComponentBrowser();
 		}
 
 		void SetUpComponentBrowser()
@@ -216,19 +223,13 @@ namespace LJEditor {
 			this->tsBtnRemove->Image = Image::FromFile( String::Concat(textureLocation + "\\Remove.png") );
 		}
 
-		void CreateTableEntries( ComponentInformation ^ componentInformation )
+		//////////////////////////////////////////////////////////////////////////
+		/// takes a components information and constructs a creates a row for 
+		/// each param in the component
+		//////////////////////////////////////////////////////////////////////////
+		void CreateComponentTableEntries( ComponentInformation ^ componentInformation )
 		{
-			List<String^>^ VariableTypes = gcnew List<String^>();
-			VariableTypes->Add(" f32 ");
-			VariableTypes->Add(" f64 ");
-			VariableTypes->Add(" s32 ");
-			VariableTypes->Add(" str ");
-			VariableTypes->Add(" bool ");
-
-			List<String^>^ LoadTypes = gcnew List<String^>();
-			LoadTypes->Add(" static ");
-			LoadTypes->Add(" state ");
-
+			this->dgvComponentParameters->CellValidating -= gcnew System::Windows::Forms::DataGridViewCellValidatingEventHandler(this, &ComponentTool::dgvComponentParameters_CellValidating);
 			while( this->dgvComponentParameters->Rows->Count > 1 )
 			{
 				this->dgvComponentParameters->Rows->Remove(this->dgvComponentParameters->Rows[1]);
@@ -236,35 +237,38 @@ namespace LJEditor {
 
 			for( int counter = 0; counter < componentInformation->ComponentParameters->Count; counter++ )
 			{
+				List<String^>^ variableTypes = Util::EnumUtils::getVariableTypes();
+				List<String^>^ loadTypes = Util::EnumUtils::getLoadTypes();
+				
 				String^ variableType = "";
 				String^ loadType = "";
 
 				switch( componentInformation->ComponentParameters[counter]->VarType )
 				{
 				case 0:
-					variableType = VariableTypes[0];
+					variableType = variableTypes[0];
 					break;
 				case 1:
-					variableType = VariableTypes[1];
+					variableType = variableTypes[1];
 					break;
 				case 2:
-					variableType = VariableTypes[2];
+					variableType = variableTypes[2];
 					break;
 				case 3:
-					variableType = VariableTypes[3];
+					variableType = variableTypes[3];
 					break;
 				case 4:
-					variableType = VariableTypes[4];
+					variableType = variableTypes[4];
 					break;
 				}
 
 				switch( componentInformation->ComponentParameters[counter]->LoadType )
 				{
 				case 0:
-					loadType = LoadTypes[0];
+					loadType = loadTypes[0];
 					break;
 				case 1:
-					loadType = LoadTypes[1];
+					loadType = loadTypes[1];
 					break;
 				}
 				this->dgvComponentParameters->Rows[counter]->Cells[0]->Value = componentInformation->ComponentParameters[counter]->Name;
@@ -273,31 +277,28 @@ namespace LJEditor {
 				this->dgvComponentParameters->Rows[counter]->Cells[3]->Value = System::Convert::ToString( componentInformation->ComponentParameters[counter]->Value );
 				this->dgvComponentParameters->Rows[counter]->Cells[4]->Value = componentInformation->ComponentParameters[counter]->Discription;
 				this->dgvComponentParameters->Rows[counter]->Resizable = DataGridViewTriState::False;
+
 				if( counter < componentInformation->ComponentParameters->Count  - 1)
 				{
 					this->dgvComponentParameters->Rows->Insert(counter + 1,1);
 				}
 			}
+			this->dgvComponentParameters->CellValidating += gcnew System::Windows::Forms::DataGridViewCellValidatingEventHandler(this, &ComponentTool::dgvComponentParameters_CellValidating);
 		}
+
 		//////////////////////////////////////////////////////////////////////////
-		/// takes a components information and constructs a table from the values
+		/// takes a components information and constructs a table from the values.
+		/// This created the all the columns for the table
 		//////////////////////////////////////////////////////////////////////////
 		void CreateComponentTable ( ComponentInformation ^ componentInformation )
 		{
-			List<String^>^ VariableTypes = gcnew List<String^>();
-			VariableTypes->Add(" f32 ");
-			VariableTypes->Add(" f64 ");
-			VariableTypes->Add(" s32 ");
-			VariableTypes->Add(" str ");
-			VariableTypes->Add(" bool ");
-			
-			List<String^>^ LoadTypes = gcnew List<String^>();
-			LoadTypes->Add(" static ");
-			LoadTypes->Add(" state ");
+			List<String^>^ variableTypes = Util::EnumUtils::getVariableTypes();
+			List<String^>^ loadTypes = Util::EnumUtils::getLoadTypes();
 
 			String^ baseClassVar = System::Convert::ToString( componentInformation->BaseClass );
 			
 			this->dgvComponentParameters->AllowUserToAddRows = false;
+			//this->dgvComponentParameters->SelectionMode = DataGridViewSelectionMode::FullRowSelect;
 
 			//creating a new column and setting them so they aren't sortable
 			int index = 0;
@@ -309,14 +310,14 @@ namespace LJEditor {
 			this->dgvComponentParameters->Columns->Add( dataGridViewComboBoxColumn1 );
 			dataGridViewComboBoxColumn1->SortMode = DataGridViewColumnSortMode::NotSortable;
 			dataGridViewComboBoxColumn1->Name = "LoadType";
-			dataGridViewComboBoxColumn1->DataSource = LoadTypes;
+			dataGridViewComboBoxColumn1->DataSource = loadTypes;
 			index++;
 
 			DataGridViewComboBoxColumn^ dataGridViewComboBoxColumn = gcnew DataGridViewComboBoxColumn();
 			this->dgvComponentParameters->Columns->Add( dataGridViewComboBoxColumn );
 			dataGridViewComboBoxColumn->SortMode = DataGridViewColumnSortMode::NotSortable;
 			dataGridViewComboBoxColumn->Name = "Type";
-			dataGridViewComboBoxColumn->DataSource = VariableTypes;
+			dataGridViewComboBoxColumn->DataSource = variableTypes;
 			index++;
 
 			this->dgvComponentParameters->Columns->Add("Value", "Value");
@@ -328,15 +329,11 @@ namespace LJEditor {
 			index++;
 			this->dgvComponentParameters->Rows->Add( componentInformation );
 
-			CreateTableEntries( componentInformation );
+			CreateComponentTableEntries( componentInformation );
 
 			//this->dgvComponentParameters->RowsAdded += gcnew System::Windows::Forms::DataGridViewRowsAddedEventHandler(this, &ComponentTool::dgvComponentParameters_RowsAdded);
 		}
-	private: 
-		//System::Void dgvComponentParameters_RowsAdded(System::Object^  sender, System::Windows::Forms::DataGridViewRowsAddedEventArgs^  e) 
-		//{
-		//	int bp = 0;
-		//}
+
 private: 
 	System::Void tsBtnAdd_Click(System::Object^  sender, System::EventArgs^  e) 
 	{
@@ -344,11 +341,11 @@ private:
 		m_ComponentInfo->ComponentParameters->Add( componentParamInfo );
 		componentParamInfo->Name = "TestName" + m_ComponentInfo->ComponentParameters->Count;
 		componentParamInfo->Discription = "TestDiscription" + m_ComponentInfo->ComponentParameters->Count;
-		componentParamInfo->VarType = 1;
-		componentParamInfo->LoadType = 1;
+		componentParamInfo->VarType = 0;
+		componentParamInfo->LoadType = 0;
 		componentParamInfo->Value = " TestValue" + m_ComponentInfo->ComponentParameters->Count ;
 
-		CreateTableEntries(m_ComponentInfo);
+		CreateComponentTableEntries(m_ComponentInfo);
 	}
 private: 
 	System::Void tsBtnRemove_Click(System::Object^  sender, System::EventArgs^  e) 
@@ -360,7 +357,7 @@ private:
 
 			m_ComponentInfo->ComponentParameters->RemoveAt( row->Index );
 
-			CreateTableEntries(m_ComponentInfo);
+			CreateComponentTableEntries(m_ComponentInfo);
 		}
 	}
 private: 
@@ -369,7 +366,75 @@ private:
 		for( int counter = 0; counter < this->dgvComponentParameters->Columns->Count; counter++)
 		{
 			this->dgvComponentParameters->Columns[counter]->Resizable = DataGridViewTriState::False; 
-			this->dgvComponentParameters->Columns[counter]->Width = this->dgvComponentParameters->Width / this->dgvComponentParameters->Columns->Count;
+			this->dgvComponentParameters->Columns[counter]->Width = ( this->dgvComponentParameters->Width )/ this->dgvComponentParameters->Columns->Count;
+		}
+	}
+private: 
+	System::Void dgvComponentParameters_CellValidating(System::Object^  sender, System::Windows::Forms::DataGridViewCellValidatingEventArgs^  e) 
+	{
+		int rowIndex = e->RowIndex;
+		int columnIndex= e->ColumnIndex;
+		
+		ComponentParameterInformation^ compParam = m_ComponentInfo->ComponentParameters[rowIndex];
+
+		switch( columnIndex )
+		{
+		case 0:
+			//Name of the param
+			compParam->Name = e->FormattedValue->ToString();
+			break;
+		case 1:
+			{
+				//Loadtype of the param
+				String^ newValue = e->FormattedValue->ToString();
+				int enumValue = Util::EnumUtils::getEnumValueFromString( newValue , Util::EnumUtils::getLoadTypes() );
+				//if the value is greater then -1
+				if( enumValue >= 0 )
+				{
+					//set the new param
+					compParam->LoadType = enumValue;
+				}
+				else
+				{
+					//LOG msg about incorrect value
+					e->Cancel = true;
+				}
+			}
+			break;
+		case 2:
+			{
+				//Type of the param
+				String^ newValue = e->FormattedValue->ToString();
+				int enumValue = Util::EnumUtils::getEnumValueFromString( newValue , Util::EnumUtils::getVariableTypes() );
+				//if the value is greater then -1
+				if( enumValue >= 0 )
+				{
+					//set the new param
+					compParam->VarType = enumValue;
+				}
+				else
+				{
+					//LOG msg about incorrect value
+					e->Cancel = true;
+				}
+			}
+			break;
+		case 3:
+			//Value of the param
+			compParam->Value = e->FormattedValue->ToString();
+			break;
+		case 4:
+			//Discription of the param
+			compParam->Discription = e->FormattedValue->ToString();
+			break;
+		}
+	}
+private: 
+	System::Void dgvComponentParameters_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) 
+	{
+		if ( ! this->dgvComponentParameters->Rows[ e->RowIndex]->Selected )
+		{
+			this->dgvComponentParameters->Rows[ e->RowIndex]->Selected = true;
 		}
 	}
 };

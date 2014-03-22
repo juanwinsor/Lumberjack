@@ -377,7 +377,7 @@ private:
 	System::Void LumberjackEditor_Load(System::Object^  sender, System::EventArgs^  e) 
 	{
 		ComponentTool ^ newComponentTool = gcnew ComponentTool();
-		newComponentTool->SetUpFileBrowser();
+		newComponentTool->Initialize();
 
 		array<Control^> ^ ControlsForComponentTool = gcnew array<Control^>(99);
 		newComponentTool->Controls->CopyTo( ControlsForComponentTool , 0 );
