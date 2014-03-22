@@ -57,7 +57,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)deps\include\;$(SolutionDir)deps\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>$(SolutionDir)deps\include\global.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>$(SolutionDir)deps\include\global.h;$(ProjectDir)src\engine_global.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,10 +117,13 @@ xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Comman
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\EntitySystem\Component_Pyramid.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\EntitySystem\Component.h" />
+    <ClInclude Include="src\EntitySystem\ComponentTypes.h" />
     <ClInclude Include="src\EntitySystem\Entity.h" />
     <ClInclude Include="src\EntitySystem\EntityManager.h" />
+    <ClInclude Include="src\EntitySystem\EntityTransform.h" />
     <ClInclude Include="src\Graphics\Camera2D.h" />
     <ClInclude Include="src\Graphics\Renderer2D.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
@@ -128,14 +131,17 @@ xcopy /d /s /i /y "$(ProjectDir)src\*.h" "$(ProjectDir)include\LJEngine"</Comman
     <ClInclude Include="src\Time\GameTime.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\EntitySystem\Component_Pyramid.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\EntitySystem\Component.cpp" />
     <ClCompile Include="src\EntitySystem\Entity.cpp" />
     <ClCompile Include="src\EntitySystem\EntityManager.cpp" />
+    <ClCompile Include="src\EntitySystem\EntityTransform.cpp" />
     <ClCompile Include="src\Graphics\Camera2D.cpp" />
     <ClCompile Include="src\Graphics\Renderer2D.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\LJEngineTestClass.cpp" />
+    <ClCompile Include="src\Time\GameTime.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

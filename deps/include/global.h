@@ -5,6 +5,7 @@
 //-- glm and extensions
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 //-- Boost shared pointer typedef
 //-- usage: 

@@ -65,6 +65,8 @@ namespace OpenGLForm
 			m_GameTime->totalTime += m_GameTime->deltaTime;
 			m_LastTime = t;
 
+			m_Core->update(m_GameTime);
+
 			m_Core->preDraw();
 			m_Core->draw( m_GameTime );
 		}

@@ -1,8 +1,9 @@
 #ifndef LFCORE_H_
 #define LFCORE_H_
 
-#include "Time/GameTime.h"
 
+class GameTime;
+class EntityManager;
 
 typedef int l_s32;
 typedef float l_f32;
@@ -28,8 +29,9 @@ namespace lj
 		void draw(GameTime* gameTime);
 
 	private:
-		int m_Width;
-		int m_Height;
+
+		EntityManager* m_EntityManager;
+
 	};
 }
 
