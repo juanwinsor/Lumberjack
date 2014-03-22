@@ -45,15 +45,15 @@ public:
 		}
 	}
 
-	property int BaseClass
+	property String^ BaseClassName
 	{
-		int get ()
+		String^  get ()
 		{
-			return m_BaseClass;
+			return m_BaseName;
 		}
-		void set( int value )
+		void set( String^  value )
 		{
-			m_BaseClass = value;
+			m_BaseName = value;
 		}
 	}
 
@@ -72,7 +72,7 @@ public:
 private:
 	String^ m_Name;
 	String^ m_Discription;
-	int m_BaseClass;
+	String^ m_BaseName;
 
 	System::Collections::Generic::List<ComponentParameterInformation^>^ m_ComponentParameters ;
 };

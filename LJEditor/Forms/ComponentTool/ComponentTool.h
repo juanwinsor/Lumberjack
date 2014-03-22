@@ -57,6 +57,16 @@ namespace LJEditor {
 	private: System::Windows::Forms::ToolStrip^  toolStrip1;
 	private: System::Windows::Forms::ToolStripButton^  tsBtnAdd;
 	private: System::Windows::Forms::ToolStripButton^  tsBtnRemove;
+	private: System::Windows::Forms::Panel^  pnlComponentInfo;
+	private: System::Windows::Forms::Label^  lbComponentExtends;
+	private: System::Windows::Forms::TextBox^  tbComponentName;
+	private: System::Windows::Forms::Label^  lbComponentName;
+	private: System::Windows::Forms::TextBox^  tbComponentExtends;
+	private: System::Windows::Forms::TextBox^  tbComponentDiscription;
+
+	private: System::Windows::Forms::Label^  lbComponentDiscription;
+
+
 
 
 
@@ -71,16 +81,24 @@ namespace LJEditor {
 		{
 			this->scMain = (gcnew System::Windows::Forms::SplitContainer());
 			this->tvFileBrowser = (gcnew System::Windows::Forms::TreeView());
+			this->dgvComponentParameters = (gcnew System::Windows::Forms::DataGridView());
+			this->pnlComponentInfo = (gcnew System::Windows::Forms::Panel());
+			this->tbComponentDiscription = (gcnew System::Windows::Forms::TextBox());
+			this->lbComponentDiscription = (gcnew System::Windows::Forms::Label());
+			this->tbComponentExtends = (gcnew System::Windows::Forms::TextBox());
+			this->lbComponentExtends = (gcnew System::Windows::Forms::Label());
+			this->tbComponentName = (gcnew System::Windows::Forms::TextBox());
+			this->lbComponentName = (gcnew System::Windows::Forms::Label());
 			this->toolStrip1 = (gcnew System::Windows::Forms::ToolStrip());
 			this->tsBtnAdd = (gcnew System::Windows::Forms::ToolStripButton());
 			this->tsBtnRemove = (gcnew System::Windows::Forms::ToolStripButton());
-			this->dgvComponentParameters = (gcnew System::Windows::Forms::DataGridView());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->BeginInit();
 			this->scMain->Panel1->SuspendLayout();
 			this->scMain->Panel2->SuspendLayout();
 			this->scMain->SuspendLayout();
-			this->toolStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dgvComponentParameters))->BeginInit();
+			this->pnlComponentInfo->SuspendLayout();
+			this->toolStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// scMain
@@ -95,8 +113,9 @@ namespace LJEditor {
 			// 
 			// scMain.Panel2
 			// 
-			this->scMain->Panel2->Controls->Add(this->toolStrip1);
 			this->scMain->Panel2->Controls->Add(this->dgvComponentParameters);
+			this->scMain->Panel2->Controls->Add(this->pnlComponentInfo);
+			this->scMain->Panel2->Controls->Add(this->toolStrip1);
 			this->scMain->Size = System::Drawing::Size(915, 539);
 			this->scMain->SplitterDistance = 170;
 			this->scMain->TabIndex = 0;
@@ -108,6 +127,82 @@ namespace LJEditor {
 			this->tvFileBrowser->Name = L"tvFileBrowser";
 			this->tvFileBrowser->Size = System::Drawing::Size(170, 539);
 			this->tvFileBrowser->TabIndex = 0;
+			// 
+			// dgvComponentParameters
+			// 
+			this->dgvComponentParameters->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dgvComponentParameters->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->dgvComponentParameters->Location = System::Drawing::Point(0, 100);
+			this->dgvComponentParameters->Name = L"dgvComponentParameters";
+			this->dgvComponentParameters->Size = System::Drawing::Size(741, 414);
+			this->dgvComponentParameters->TabIndex = 0;
+			this->dgvComponentParameters->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &ComponentTool::dgvComponentParameters_CellClick);
+			this->dgvComponentParameters->CellValidating += gcnew System::Windows::Forms::DataGridViewCellValidatingEventHandler(this, &ComponentTool::dgvComponentParameters_CellValidating);
+			this->dgvComponentParameters->Resize += gcnew System::EventHandler(this, &ComponentTool::dgvComponentParameters_Resize);
+			// 
+			// pnlComponentInfo
+			// 
+			this->pnlComponentInfo->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->pnlComponentInfo->Controls->Add(this->tbComponentDiscription);
+			this->pnlComponentInfo->Controls->Add(this->lbComponentDiscription);
+			this->pnlComponentInfo->Controls->Add(this->tbComponentExtends);
+			this->pnlComponentInfo->Controls->Add(this->lbComponentExtends);
+			this->pnlComponentInfo->Controls->Add(this->tbComponentName);
+			this->pnlComponentInfo->Controls->Add(this->lbComponentName);
+			this->pnlComponentInfo->Dock = System::Windows::Forms::DockStyle::Top;
+			this->pnlComponentInfo->Location = System::Drawing::Point(0, 0);
+			this->pnlComponentInfo->Name = L"pnlComponentInfo";
+			this->pnlComponentInfo->Size = System::Drawing::Size(741, 100);
+			this->pnlComponentInfo->TabIndex = 3;
+			// 
+			// tbComponentDiscription
+			// 
+			this->tbComponentDiscription->Location = System::Drawing::Point(69, 30);
+			this->tbComponentDiscription->Multiline = true;
+			this->tbComponentDiscription->Name = L"tbComponentDiscription";
+			this->tbComponentDiscription->Size = System::Drawing::Size(361, 63);
+			this->tbComponentDiscription->TabIndex = 5;
+			// 
+			// lbComponentDiscription
+			// 
+			this->lbComponentDiscription->AutoSize = true;
+			this->lbComponentDiscription->Location = System::Drawing::Point(4, 29);
+			this->lbComponentDiscription->Name = L"lbComponentDiscription";
+			this->lbComponentDiscription->Size = System::Drawing::Size(59, 13);
+			this->lbComponentDiscription->TabIndex = 4;
+			this->lbComponentDiscription->Text = L"Discription:";
+			// 
+			// tbComponentExtends
+			// 
+			this->tbComponentExtends->Location = System::Drawing::Point(296, 4);
+			this->tbComponentExtends->Name = L"tbComponentExtends";
+			this->tbComponentExtends->Size = System::Drawing::Size(134, 20);
+			this->tbComponentExtends->TabIndex = 3;
+			// 
+			// lbComponentExtends
+			// 
+			this->lbComponentExtends->AutoSize = true;
+			this->lbComponentExtends->Location = System::Drawing::Point(245, 7);
+			this->lbComponentExtends->Name = L"lbComponentExtends";
+			this->lbComponentExtends->Size = System::Drawing::Size(48, 13);
+			this->lbComponentExtends->TabIndex = 2;
+			this->lbComponentExtends->Text = L"Extends:";
+			// 
+			// tbComponentName
+			// 
+			this->tbComponentName->Location = System::Drawing::Point(105, 4);
+			this->tbComponentName->Name = L"tbComponentName";
+			this->tbComponentName->Size = System::Drawing::Size(134, 20);
+			this->tbComponentName->TabIndex = 1;
+			// 
+			// lbComponentName
+			// 
+			this->lbComponentName->AutoSize = true;
+			this->lbComponentName->Location = System::Drawing::Point(4, 7);
+			this->lbComponentName->Name = L"lbComponentName";
+			this->lbComponentName->Size = System::Drawing::Size(95, 13);
+			this->lbComponentName->TabIndex = 0;
+			this->lbComponentName->Text = L"Component Name:";
 			// 
 			// toolStrip1
 			// 
@@ -125,6 +220,7 @@ namespace LJEditor {
 			this->tsBtnAdd->Name = L"tsBtnAdd";
 			this->tsBtnAdd->Size = System::Drawing::Size(23, 22);
 			this->tsBtnAdd->Text = L"tsBtnAdd";
+			this->tsBtnAdd->ToolTipText = L"Add Component Parameter";
 			this->tsBtnAdd->Click += gcnew System::EventHandler(this, &ComponentTool::tsBtnAdd_Click);
 			// 
 			// tsBtnRemove
@@ -133,20 +229,8 @@ namespace LJEditor {
 			this->tsBtnRemove->Name = L"tsBtnRemove";
 			this->tsBtnRemove->Size = System::Drawing::Size(23, 22);
 			this->tsBtnRemove->Text = L"tsBtnRemove";
-			this->tsBtnRemove->ToolTipText = L"Remove Element";
+			this->tsBtnRemove->ToolTipText = L"Remove Component Parameter";
 			this->tsBtnRemove->Click += gcnew System::EventHandler(this, &ComponentTool::tsBtnRemove_Click);
-			// 
-			// dgvComponentParameters
-			// 
-			this->dgvComponentParameters->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dgvComponentParameters->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->dgvComponentParameters->Location = System::Drawing::Point(0, 0);
-			this->dgvComponentParameters->Name = L"dgvComponentParameters";
-			this->dgvComponentParameters->Size = System::Drawing::Size(741, 539);
-			this->dgvComponentParameters->TabIndex = 0;
-			this->dgvComponentParameters->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &ComponentTool::dgvComponentParameters_CellClick);
-			this->dgvComponentParameters->CellValidating += gcnew System::Windows::Forms::DataGridViewCellValidatingEventHandler(this, &ComponentTool::dgvComponentParameters_CellValidating);
-			this->dgvComponentParameters->Resize += gcnew System::EventHandler(this, &ComponentTool::dgvComponentParameters_Resize);
 			// 
 			// ComponentTool
 			// 
@@ -162,9 +246,11 @@ namespace LJEditor {
 			this->scMain->Panel2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->scMain))->EndInit();
 			this->scMain->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dgvComponentParameters))->EndInit();
+			this->pnlComponentInfo->ResumeLayout(false);
+			this->pnlComponentInfo->PerformLayout();
 			this->toolStrip1->ResumeLayout(false);
 			this->toolStrip1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->dgvComponentParameters))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -192,6 +278,8 @@ namespace LJEditor {
 		{
 			m_ComponentInfo = gcnew ComponentInformation();
 			m_ComponentInfo->Name = "TestName";
+			m_ComponentInfo->BaseClassName = "TestBaseName";
+			m_ComponentInfo->Discription = "This is a test discription and it will kill you while you sleep if you fuck with it....I mean it, don't fuck with a good thing. Or it will fuck you right back (testing wrapping).............................";
 			m_ComponentInfo->ComponentParameters->Add( gcnew ComponentParameterInformation() );
 			m_ComponentInfo->ComponentParameters[0]->Name = "TestName0";
 			m_ComponentInfo->ComponentParameters[0]->Discription = "TestDiscription0";
@@ -214,6 +302,10 @@ namespace LJEditor {
 			m_ComponentInfo->ComponentParameters[2]->Value = " TestValue2" ;
 
 			CreateComponentTable( m_ComponentInfo );
+
+			this->tbComponentName->Text = m_ComponentInfo->Name;
+			this->tbComponentExtends->Text = m_ComponentInfo->BaseClassName;
+			this->tbComponentDiscription->Text = m_ComponentInfo->Discription;
 
 			String^ textureLocation = Application::StartupPath;
 
@@ -295,7 +387,7 @@ namespace LJEditor {
 			List<String^>^ variableTypes = Util::EnumUtils::getVariableTypes();
 			List<String^>^ loadTypes = Util::EnumUtils::getLoadTypes();
 
-			String^ baseClassVar = System::Convert::ToString( componentInformation->BaseClass );
+			String^ baseClassVar = componentInformation->BaseClassName;//System::Convert::ToString( componentInformation->BaseClass );
 			
 			this->dgvComponentParameters->AllowUserToAddRows = false;
 			//this->dgvComponentParameters->SelectionMode = DataGridViewSelectionMode::FullRowSelect;
@@ -363,10 +455,12 @@ private:
 private: 
 	System::Void dgvComponentParameters_Resize(System::Object^  sender, System::EventArgs^  e) 
 	{
+		int headerwidth = this->dgvComponentParameters->RowHeadersWidth + 1;
+
 		for( int counter = 0; counter < this->dgvComponentParameters->Columns->Count; counter++)
 		{
 			this->dgvComponentParameters->Columns[counter]->Resizable = DataGridViewTriState::False; 
-			this->dgvComponentParameters->Columns[counter]->Width = ( this->dgvComponentParameters->Width )/ this->dgvComponentParameters->Columns->Count;
+			this->dgvComponentParameters->Columns[counter]->Width = ( this->dgvComponentParameters->Width - headerwidth )/ this->dgvComponentParameters->Columns->Count;
 		}
 	}
 private: 
@@ -432,9 +526,12 @@ private:
 private: 
 	System::Void dgvComponentParameters_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) 
 	{
-		if ( ! this->dgvComponentParameters->Rows[ e->RowIndex]->Selected )
+		if( e->RowIndex > -1 )
 		{
-			this->dgvComponentParameters->Rows[ e->RowIndex]->Selected = true;
+			if ( ! this->dgvComponentParameters->Rows[ e->RowIndex]->Selected )
+			{
+				this->dgvComponentParameters->Rows[ e->RowIndex]->Selected = true;
+			}
 		}
 	}
 };
